@@ -6,12 +6,20 @@ size_t custom_strlen(const char* str) {
     return strlen(str);
 }
 
-// TODO(my_username): Stuff.
-
 int custom_pow(int base, int power) {
+	if (power == 0) return 1;
+	if(base == 1) return 1;
+	if(base == 0) return 0;
+	int p = 1;
 	int temp = base;
-	if(base == 1 || power == 0) return 1;
-	if (base == 0) return 0;
-	for(int i = 0; i < power - 1; i++) temp *= base;
-    return temp;
+	while(p != power) {
+		if(p * 2 <= power) {
+			p *= 2;
+			base *= base;
+		} else {
+			p += 1;
+			base *= temp;
+		}
+	}
+	return base;
 }
