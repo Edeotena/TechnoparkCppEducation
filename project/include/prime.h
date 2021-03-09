@@ -1,7 +1,7 @@
 #ifndef PROJECT_INCLUDE_PRIME_H_
 #define PROJECT_INCLUDE_PRIME_H_
 
-int isPrime(long value);
+int is_Prime(long value);
 
 #endif  // PROJECT_INCLUDE_PRIME_H_
 
