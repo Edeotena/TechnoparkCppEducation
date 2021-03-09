@@ -1,6 +1,6 @@
 #include "prime.h"
 
-int is_Prime(long value) {
+int is_prime(long value) {
 	if (value <= 1) {
 		return 0;
 	}
