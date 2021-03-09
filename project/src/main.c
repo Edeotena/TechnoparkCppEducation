@@ -54,7 +54,7 @@ int main(int argc, const char** argv) {
         }
         case TST_MOD_IMPL: {
             long value = atoi(data);
-            int res = is_Prime(value);
+            int res = is_prime(value);
             printf("%i\n", res);
             break;
         }
