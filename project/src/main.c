@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #include "utils.h"
-#include "simp.h"
+#include "prime.h"
 
 #define ERR_ARGS_COUNT (-1)
 #define ERR_WRONG_FLG (-2)
@@ -53,8 +53,8 @@ int main(int argc, const char** argv) {
             break;
         }
         case TST_MOD_IMPL: {
-            long chisl = atoi(data);
-            int res = prime(chisl);
+            long value = atoi(data);
+            int res = isPrime(value);
             printf("%i\n", res);
             break;
         }
