@@ -12,16 +12,16 @@ void masterWrite(FILE *ofPTR, Data Client) {
         "7 Client credit limit: ",
         "8 Client cash payments: ");
 
-    while (scanf("%d%20s%20s%30s%15s%lf%lf%lf",
-        &Client.Number,
-        Client.Name,
-        Client.Surname,
-        Client.address,
-        Client.TelNumber,
-        &Client.indebtedness,
-        &Client.credit_limit,
-        &Client.cash_payments) != -1) {
-        if (file_methods_check("file.dat")) {
+    if (file_methods_check("file.dat")) {
+        while (scanf("%d%20s%20s%30s%15s%lf%lf%lf",
+            &Client.Number,
+            Client.Name,
+            Client.Surname,
+            Client.address,
+            Client.TelNumber,
+            &Client.indebtedness,
+            &Client.credit_limit,
+            &Client.cash_payments) != -1) {
             fprintf(ofPTR, "%-12d%-11s%-11s%-16s%20s%12.2f%12.2f%12.2f\n",
             Client.Number,
             Client.Name,
