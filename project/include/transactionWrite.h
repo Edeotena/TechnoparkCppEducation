@@ -1,8 +1,8 @@
-#ifndef TRANSACTIONWRITE_H
-#define TRANSACTIONWRITE_H
+#ifndef PROJECT_INCLUDE_TRANSACTIONWRITE_H_
+#define PROJECT_INCLUDE_TRANSACTIONWRITE_H_
 
 #include "utils.h"
 
 void transactionWrite(FILE *ofPTR, Data transfer);
 
-#endif  //  TRANSACTIONWRITE_H
+#endif  //  PROJECT_INCLUDE_TRANSACTIONWRITE_H_
