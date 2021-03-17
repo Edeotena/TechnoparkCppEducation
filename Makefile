@@ -1,9 +1,11 @@
 TARGET = main.out
 HDRS_DIR = project/include
 
-# XXX: Don't forget backslash at the end of any line except the last one
 SRCS = \
-       project/src/main.c \
+	project/src/main.c \
+	project/src/transactionWrite.c \
+	project/src/masterWrite.c \
+	project/src/blackRecord.c 
 
 .PHONY: all clean
 

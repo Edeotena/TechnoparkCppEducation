@@ -1,10 +1,20 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <stdio.h>
+#include <stdlib.h>
 
-size_t custom_strlen(const char* str);
-// TODO: Implement `power of` function
-// int custom_pow(int base, int power);
+#define filename "transaction.dat"
 
-#endif //UTILS_H
+typedef struct {
+    int Number;
+    char Name[20];
+    char Surname[20];
+    char address[30];
+    char TelNumber[15];
+    double indebtedness;
+    double credit_limit;
+    double cash_payments;
+} Data;
 
+#endif  //  UTILS_H
