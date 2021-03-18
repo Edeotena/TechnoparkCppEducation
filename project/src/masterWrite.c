@@ -1,15 +1,15 @@
-#include "masterWrite.h"
+#include "prototype_storage.h"
 
-void masterWrite(FILE *ofPTR, Data Client) {
+void masterWrite(FILE *incoming_ptr, Data Client) {
     printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n\n",
-        "1 Number account: ",
-        "2 Client name: ",
-        "3 Surname: ",
-        "4 address client: ",
-        "5 Client Telnum: ",
-        "6 Client indebtedness: ",
-        "7 Client credit limit: ",
-        "8 Client cash payments: ");
+           "1 Number account: ",
+           "2 Client name: ",
+           "3 Surname: ",
+           "4 address client: ",
+           "5 Client Telnum: ",
+           "6 Client indebtedness: ",
+           "7 Client credit limit: ",
+           "8 Client cash payments: ");
 
     while (scanf("%d%20s%20s%30s%15s%lf%lf%lf",
         &Client.Number,
@@ -20,7 +20,7 @@ void masterWrite(FILE *ofPTR, Data Client) {
         &Client.indebtedness,
         &Client.credit_limit,
         &Client.cash_payments) != -1) {
-        fprintf(ofPTR, "%-12d%-11s%-11s%-16s%20s%12.2f%12.2f%12.2f\n",
+        fprintf(incoming_ptr, "%-12d%-11s%-11s%-16s%20s%12.2f%12.2f%12.2f\n",
         Client.Number,
         Client.Name,
         Client.Surname,
@@ -31,13 +31,13 @@ void masterWrite(FILE *ofPTR, Data Client) {
         Client.cash_payments);
 
         printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n\n",
-            "1 Number account: ",
-            "2 Client name: ",
-            "3 Surname: ",
-            "4 address client: ",
-            "5 Client Telnum: ",
-            "6 Client indebtedness: ",
-            "7 Client credit limit: ",
-            "8 Client cash payments:");
+               "1 Number account: ",
+               "2 Client name: ",
+               "3 Surname: ",
+               "4 address client: ",
+               "5 Client Telnum: ",
+               "6 Client indebtedness: ",
+               "7 Client credit limit: ",
+               "8 Client cash payments:");
     }
 }
