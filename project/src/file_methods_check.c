@@ -1,37 +1,37 @@
 #include "file_methods_check.h"
 
-void write_to_file(const char* filename_, test_struct* data) {
-    FILE* ptr;
-    ptr = fopen(filename_, "w");
+void write_to_file(const char* file_to_check_file_methods, test_struct* data) {
+    FILE* test_file = fopen(file_to_check_file_methods, "w");
 
-    if (ptr != NULL) {
-        fprintf(ptr, "%-12d%-12d\n",
-                data->Number,
-                data->Value);
-        fclose(ptr);
+    if (test_file != NULL) {
+        fprintf(test_file,
+                "%-12d%-12d\n",
+                data->number,
+                data->value);
+        fclose(test_file);
     }
 }
 
-void read_from_file(const char* filename_, test_struct* data) {
-    FILE* ptr;
-    ptr = fopen(filename_, "r");
+void read_from_file(const char* file_to_check_file_methods, test_struct* data) {
+    FILE* test_file = fopen(file_to_check_file_methods, "r");
 
-    if (ptr != NULL) {
-        fscanf(ptr, "%12d%12d\n",
-            &data->Number,
-            &data->Value);
-        fclose(ptr);
+    if (test_file != NULL) {
+        fscanf(test_file,
+               "%12d%12d\n",
+               &data->number,
+               &data->value);
+        fclose(test_file);
     }
 }
 
-int file_methods_check(const char* filename_) {
+int file_methods_check(const char* file_to_check_file_methods) {
     test_struct  expected_data = {11, -14};
-    write_to_file(filename_, &expected_data);
+    write_to_file(file_to_check_file_methods, &expected_data);
     test_struct got_data;
-    read_from_file(filename_, &got_data);
+    read_from_file(file_to_check_file_methods, &got_data);
 
-    if (expected_data.Number == got_data.Number &&
-        expected_data.Value == got_data.Value) {
+    if (expected_data.number == got_data.number &&
+        expected_data.value == got_data.value) {
         return 1;
     }
     return 0;
