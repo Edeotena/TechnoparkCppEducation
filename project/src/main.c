@@ -4,7 +4,7 @@
 int main(void) {
     if (file_methods_check("file.dat")) {
         int choice = 0;
-        FILE *file_to_keep_clients, *file_to_keep_transactions , *file_to_keep_maked_transactions;
+        FILE *file_clients, *file_transactions , *file_ready_clients;
         data client_data = {0}, transfer_to_client = {0};
 
         printf("%s\n%s\n%s\n%s\n\n",
@@ -16,37 +16,37 @@ int main(void) {
         while (scanf("%d", &choice) != -1) {
             switch (choice) {
             case 1:
-                file_to_keep_clients = fopen("record.dat", "r+");
-                if (file_to_keep_clients == NULL) {
+                file_clients = fopen("record.dat", "r+");
+                if (file_clients == NULL) {
                     puts("Not access");
                 } else {
-                    master_write(file_to_keep_clients, client_data);
-                    fclose(file_to_keep_clients);
+                    master_write(file_clients, client_data);
+                    fclose(file_clients);
                 }
             break;
 
             case 2:
-                file_to_keep_clients = fopen(filename, "r+");
-                if (file_to_keep_clients == NULL) {
+                file_clients = fopen(filename, "r+");
+                if (file_clients == NULL) {
                     puts("Not access");
                 } else {
-                    transaction_write(file_to_keep_clients, transfer_to_client);
-                    fclose(file_to_keep_clients);
+                    transaction_write(file_clients, transfer_to_client);
+                    fclose(file_clients);
                 }
                 break;
 
             case 3:
-                file_to_keep_clients = fopen("record.dat", "r");
-                file_to_keep_transactions = fopen(filename, "r");
-                file_to_keep_maked_transactions = fopen("blackrecord.dat", "w");
-                if (file_to_keep_clients == NULL || file_to_keep_transactions == NULL) {
+                file_clients = fopen("record.dat", "r");
+                file_transactions = fopen(filename, "r");
+                file_ready_clients = fopen("blackrecord.dat", "w");
+                if (file_clients == NULL || file_transactions == NULL) {
                     puts("exit");
                 } else {
-                    black_record(file_to_keep_clients, file_to_keep_transactions,
-                    file_to_keep_maked_transactions, client_data, transfer_to_client);
-                    fclose(file_to_keep_clients);
-                    fclose(file_to_keep_transactions);
-                    fclose(file_to_keep_maked_transactions);
+                    black_record(file_clients, file_transactions,
+                    file_ready_clients, client_data, transfer_to_client);
+                    fclose(file_clients);
+                    fclose(file_transactions);
+                    fclose(file_ready_clients);
                 }
                 break;
 

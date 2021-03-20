@@ -1,6 +1,6 @@
 #include "prototype_storage.h"
 
-void master_write(FILE *file_to_keep_clients, data Client) {
+void master_write(FILE *file_clients, data Client) {
     printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n\n",
            "1 Number account: ",
            "2 Client name: ",
@@ -20,7 +20,7 @@ void master_write(FILE *file_to_keep_clients, data Client) {
                  &Client.indebtedness,
                  &Client.credit_limit,
                  &Client.cash_payments) != -1) {
-           fprintf(file_to_keep_clients,
+           fprintf(file_clients,
                    "%-12d%-11s%-11s%-16s%20s%12.2f%12.2f%12.2f\n",
                    Client.number,
                    Client.name,

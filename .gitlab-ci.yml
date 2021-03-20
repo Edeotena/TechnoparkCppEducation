@@ -37,3 +37,4 @@ test_mem:
 my_test:
   stage: my_test
   script:
+    - ./mytests/run.sh ./${BIN_NAME}

@@ -1,7 +1,7 @@
 #include "prototype_storage.h"
 
-void black_record(FILE *incoming_clients, FILE *incoming_transfers,
-                 FILE *file_to_keep_maked_transactions, data client_data, data transfer_to_client) {
+void black_record(FILE *incoming_clients, FILE *incoming_transactions,
+                 FILE *file_ready_clients, data client_data, data transfer_to_client) {
     while (fscanf(incoming_clients,
                   "%d%20s%20s%30s%15s%lf%lf%lf",
                   &client_data.number,
@@ -12,7 +12,7 @@ void black_record(FILE *incoming_clients, FILE *incoming_transfers,
                   &client_data.indebtedness,
                   &client_data.credit_limit,
                   &client_data.cash_payments) != -1) {
-        while (fscanf(incoming_transfers,
+        while (fscanf(incoming_transactions,
                       "%d %lf",
                       &transfer_to_client.number,
                       &transfer_to_client.cash_payments) != -1) {
@@ -21,7 +21,7 @@ void black_record(FILE *incoming_clients, FILE *incoming_transfers,
             }
         }
 
-        fprintf(file_to_keep_maked_transactions,
+        fprintf(file_ready_clients,
                 "%-12d%-11s%-11s%-16s%20s%12.2f%12.2f%12.2f\n",
                 client_data.number,
                 client_data.name,
@@ -31,6 +31,6 @@ void black_record(FILE *incoming_clients, FILE *incoming_transfers,
                 client_data.indebtedness,
                 client_data.credit_limit,
                 client_data.cash_payments);
-        rewind(incoming_transfers);
+        rewind(incoming_transactions);
     }
 }

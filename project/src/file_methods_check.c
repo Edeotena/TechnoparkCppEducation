@@ -1,7 +1,7 @@
 #include "file_methods_check.h"
 
-void write_to_file(const char* file_to_check_file_methods, test_struct* data) {
-    FILE* test_file = fopen(file_to_check_file_methods, "w");
+void write_to_file(const char* fprintf_check_file, test_struct* data) {
+    FILE* test_file = fopen(fprintf_check_file, "w");
 
     if (test_file != NULL) {
         fprintf(test_file,
@@ -12,8 +12,8 @@ void write_to_file(const char* file_to_check_file_methods, test_struct* data) {
     }
 }
 
-void read_from_file(const char* file_to_check_file_methods, test_struct* data) {
-    FILE* test_file = fopen(file_to_check_file_methods, "r");
+void read_from_file(const char* fscanf_check_file, test_struct* data) {
+    FILE* test_file = fopen(fscanf_check_file, "r");
 
     if (test_file != NULL) {
         fscanf(test_file,
