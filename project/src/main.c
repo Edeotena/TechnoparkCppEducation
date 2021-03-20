@@ -15,7 +15,7 @@ int main(void) {
 
         while (scanf("%d", &choice) != -1) {
             switch (choice) {
-            case 1:
+            case enter_data_client:
                 file_clients = fopen("record.dat", "r+");
                 if (file_clients == NULL) {
                     puts("Not access");
@@ -25,7 +25,7 @@ int main(void) {
                 }
             break;
 
-            case 2:
+            case enter_data_transaction:
                 file_clients = fopen(filename, "r+");
                 if (file_clients == NULL) {
                     puts("Not access");
@@ -35,18 +35,23 @@ int main(void) {
                 }
                 break;
 
-            case 3:
+            case update_base:
                 file_clients = fopen("record.dat", "r");
-                file_transactions = fopen(filename, "r");
-                file_ready_clients = fopen("blackrecord.dat", "w");
-                if (file_clients == NULL || file_transactions == NULL) {
+                if (file_clients == NULL) {
                     puts("exit");
                 } else {
-                    black_record(file_clients, file_transactions,
-                    file_ready_clients, client_data, transfer_to_client);
-                    fclose(file_clients);
-                    fclose(file_transactions);
-                    fclose(file_ready_clients);
+                    file_transactions = fopen(filename, "r");
+                    if (file_transactions == NULL) {
+                        puts("exit");
+                        fclose(file_clients);
+                    } else {
+                        file_ready_clients = fopen("blackrecord.dat", "w");
+                        black_record(file_clients, file_transactions,
+                        file_ready_clients, client_data, transfer_to_client);
+                        fclose(file_clients);
+                        fclose(file_transactions);
+                        fclose(file_ready_clients);
+                    }
                 }
                 break;
 
