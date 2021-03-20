@@ -1,5 +1,5 @@
-#ifndef PROJECT_INCLUDE_STRUCT_H_
-#define PROJECT_INCLUDE_STRUCT_H_
+#ifndef PROJECT_INCLUDE_STRUCTS_H_
+#define PROJECT_INCLUDE_STRUCTS_H_
 
 typedef struct {
     int number;
@@ -12,4 +12,9 @@ typedef struct {
     double cash_payments;
 } data;
 
-#endif  //  PROJECT_INCLUDE_STRUCT_H_
+typedef struct {
+    int number;
+    int value;
+} test_struct;
+
+#endif  //  PROJECT_INCLUDE_STRUCTS_H_

@@ -5,10 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct {
-    int number;
-    int value;
-} test_struct;
+#include "structs.h"
 
 void write_to_file(const char* fprintf_check_file, test_struct* data);
 void read_from_file(const char* fscanf_check_file, test_struct* data);
