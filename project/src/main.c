@@ -42,12 +42,20 @@ int main(void) {
                 if (file_clients == NULL) {
                     return file_access_error;
                 }
+
                 file_transactions = fopen(filename, "r");
                 if (file_transactions == NULL) {
                     fclose(file_clients);
                     return file_access_error;
                 }
+
                 file_ready_clients = fopen("blackrecord.dat", "w");
+                if (file_ready_clients == NULL) {
+                    fclose(file_clients);
+                    fclose(file_transactions);
+                    return file_access_error;
+                }
+                
                 black_record(file_clients, file_transactions,
                 file_ready_clients, client_data, transfer_to_client);
                 fclose(file_clients);
