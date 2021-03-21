@@ -1,6 +1,8 @@
 #include "prototype_storage.h"
 #include "file_methods_check.h"
 
+#define file_access_error (-1)
+
 int main(void) {
     if (file_methods_check("file.dat")) {
         int choice = 0;
@@ -38,21 +40,19 @@ int main(void) {
             case update_base:
                 file_clients = fopen("record.dat", "r");
                 if (file_clients == NULL) {
-                    puts("exit");
-                } else {
-                    file_transactions = fopen(filename, "r");
-                    if (file_transactions == NULL) {
-                        puts("exit");
-                        fclose(file_clients);
-                    } else {
-                        file_ready_clients = fopen("blackrecord.dat", "w");
-                        black_record(file_clients, file_transactions,
-                        file_ready_clients, client_data, transfer_to_client);
-                        fclose(file_clients);
-                        fclose(file_transactions);
-                        fclose(file_ready_clients);
-                    }
+                    return file_access_error;
                 }
+                file_transactions = fopen(filename, "r");
+                if (file_transactions == NULL) {
+                    fclose(file_clients);
+                    return file_access_error;
+                }
+                file_ready_clients = fopen("blackrecord.dat", "w");
+                black_record(file_clients, file_transactions,
+                file_ready_clients, client_data, transfer_to_client);
+                fclose(file_clients);
+                fclose(file_transactions);
+                fclose(file_ready_clients);
                 break;
 
             default:
