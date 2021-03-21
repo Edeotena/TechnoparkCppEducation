@@ -55,7 +55,7 @@ int main(void) {
                     fclose(file_transactions);
                     return file_access_error;
                 }
-                
+
                 black_record(file_clients, file_transactions,
                 file_ready_clients, client_data, transfer_to_client);
                 fclose(file_clients);
