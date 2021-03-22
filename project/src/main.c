@@ -1,8 +1,6 @@
 #include "prototype_storage.h"
 #include "file_methods_check.h"
 
-#define file_access_error (-1)
-
 int main(void) {
     if (file_methods_check("file.dat")) {
         int choice = 0;
