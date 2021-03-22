@@ -17,7 +17,7 @@ int main(void) {
 
         while (scanf("%d", &choice) != -1) {
             switch (choice) {
-            case enter_data_client:
+            case ENTER_DATA_CLIENT:
                 file_clients = fopen("record.dat", "r+");
                 if (file_clients == NULL) {
                     puts("Not access");
@@ -28,8 +28,8 @@ int main(void) {
                 fclose(file_clients);
             break;
 
-            case enter_data_transaction:
-                file_clients = fopen(filename, "r+");
+            case ENTER_DATA_TRANSACTION:
+                file_clients = fopen(FILENAME, "r+");
                 if (file_clients == NULL) {
                     puts("Not access");
                     break;
@@ -39,14 +39,14 @@ int main(void) {
                 fclose(file_clients);
                 break;
 
-            case update_base:
+            case UPDATE_BASE:
                 file_clients = fopen("record.dat", "r");
                 if (file_clients == NULL) {
                     puts("Not access");
                     break;
                 }
 
-                file_transactions = fopen(filename, "r");
+                file_transactions = fopen(FILENAME, "r");
                 if (file_transactions == NULL) {
                     puts("Not access");
                     fclose(file_clients);
