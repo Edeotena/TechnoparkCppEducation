@@ -21,41 +21,46 @@ int main(void) {
                 file_clients = fopen("record.dat", "r+");
                 if (file_clients == NULL) {
                     puts("Not access");
-                } else {
-                    master_write(file_clients, client_data);
-                    fclose(file_clients);
+                    break;
                 }
+
+                master_write(file_clients, client_data);
+                fclose(file_clients);
             break;
 
             case enter_data_transaction:
                 file_clients = fopen(filename, "r+");
                 if (file_clients == NULL) {
                     puts("Not access");
-                } else {
-                    transaction_write(file_clients, transfer_to_client);
-                    fclose(file_clients);
+                    break;
                 }
+
+                transaction_write(file_clients, transfer_to_client);
+                fclose(file_clients);
                 break;
 
             case update_base:
                 file_clients = fopen("record.dat", "r");
                 if (file_clients == NULL) {
-                    return file_access_error;
+                    puts("Not access");
+                    break;
                 }
 
                 file_transactions = fopen(filename, "r");
                 if (file_transactions == NULL) {
+                    puts("Not access");
                     fclose(file_clients);
-                    return file_access_error;
+                    break;
                 }
 
                 file_ready_clients = fopen("blackrecord.dat", "w");
                 if (file_ready_clients == NULL) {
+                    puts("Not access");
                     fclose(file_clients);
                     fclose(file_transactions);
-                    return file_access_error;
+                    break;
                 }
-
+                
                 black_record(file_clients, file_transactions,
                 file_ready_clients, client_data, transfer_to_client);
                 fclose(file_clients);
