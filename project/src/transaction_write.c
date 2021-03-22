@@ -1,6 +1,6 @@
 #include "prototype_storage.h"
 
-void transaction_write(FILE *file_transactions, data transfer_to_client) {
+void transaction_write(const FILE *file_transactions, data transfer_to_client) {
     printf("%s\n%s\n",
            "1 Number account: ",
            "2 Client cash payments: ");
