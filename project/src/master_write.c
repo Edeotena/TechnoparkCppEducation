@@ -1,6 +1,6 @@
 #include "prototype_storage.h"
 
-void master_write(FILE *file_clients, data Client) {
+void master_write(const FILE *file_clients, data Client) {
     printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n\n",
            "1 Number account: ",
            "2 Client name: ",
