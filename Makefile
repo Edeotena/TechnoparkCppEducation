@@ -17,14 +17,14 @@ TST_HDRS = \
 
 TST_SRCS = \
            project/src/matrix.c \
-		   project/tests/src/*.c
+           project/tests/src/*.c
 
 .PHONY: all main test clean
 
 all: main test
 
 main: $(SRCS)
-	$(CC) -Wall -Wextra -Werror $(addprefix -I,$(HDRS)) -o $(TARGET) $(CFLAGS) $(SRCS) -lm
+	$(CC) -Wall -Wextra -Werror $(addprefix -I,$(HDRS)) -o $(TARGET) $(CFLAGS) $(SRCS) -fsanitize=address -fsanitize=undefined -lm
 
 test: $(TST_SRCS)
 	$(CC) -Wall -Wextra -Werror $(addprefix -I,$(TST_HDRS)) -o $(TST_TARGET) $(CFLAGS) $(TST_SRCS) -lm

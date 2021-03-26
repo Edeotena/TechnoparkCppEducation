@@ -2,9 +2,14 @@
 #define _MATRIX_H_
 
 #include <stddef.h>
+#include <stdlib.h>
+#include <stdio.h>
 
+#define ERROR (-1)
 
 typedef struct Matrix {
+	double** matrix_content;
+	size_t rows,cols;
 } Matrix;
 
 // Init/release operations
@@ -13,6 +18,7 @@ Matrix* create_matrix(size_t rows, size_t cols);
 int free_matrix(Matrix* matrix);
 
 // Basic operations
+
 int get_rows(const Matrix* matrix, size_t* rows);
 int get_cols(const Matrix* matrix, size_t* cols);
 int get_elem(const Matrix* matrix, size_t row, size_t col, double* val);
@@ -30,6 +36,5 @@ Matrix* mul(const Matrix* l, const Matrix* r);
 int det(const Matrix* matrix, double* val);
 Matrix* adj(const Matrix* matrix);
 Matrix* inv(const Matrix* matrix);
-
 
 #endif //_MATRIX_H_
