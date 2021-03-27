@@ -226,11 +226,7 @@ void less_matrix(const Matrix* matrix, Matrix* new_matrix, size_t row, size_t co
 double get_det(double **matrix, size_t size) {
     int det_power = 1;
 
-    double** matrix_2 = (double**)malloc(sizeof(double) * size), ret = 0;
-
-    for (size_t i = 0; i < size; ++i) {
-        matrix_2[i] = (double*)malloc(sizeof(double) * size);
-    }
+    double ret = 0;
 
     if (size < 1) {
         return ERROR;
@@ -246,11 +242,22 @@ double get_det(double **matrix, size_t size) {
         return(ret);
     }
 
+    double** matrix_2 = (double**)malloc(sizeof(double) * size);
+
+    for (size_t i = 0; i < size; ++i) {
+        matrix_2[i] = (double*)malloc(sizeof(double) * size);
+    }
+
     for (size_t i = 0; i < size; ++i) {
         less_double_arr(matrix, matrix_2, i, 0, size);
         ret = ret + det_power * matrix[i][0] * get_det(matrix_2, size - 1);
         det_power = -det_power;
     }
+
+    for (size_t i = 0; i < size; ++i) {
+        free(matrix_2[i]);
+    }
+    free(matrix_2);
 
     return(ret);
 }
