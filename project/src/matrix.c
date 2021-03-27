@@ -282,6 +282,7 @@ Matrix* adj(const Matrix* matrix) {
             }
             new_matrix->matrix_content[i][j] =
             det_power * get_det(additional_matrix->matrix_content, additional_matrix->rows);
+            free_matrix(additional_matrix);
         }
     }
 
@@ -297,6 +298,8 @@ Matrix* inv(const Matrix* matrix) {
 
     Matrix* additional_matrix = adj(matrix);
     Matrix* new_matrix = mul_scalar(additional_matrix, 1 / get_det(matrix->matrix_content, matrix->rows));
+
+    free_matrix(additional_matrix);
 
     return new_matrix;
 }
