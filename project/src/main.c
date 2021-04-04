@@ -1,7 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdbool.h>
+
+size_t strlen(const char* string) {
+    size_t i = 0;
+    while (*string++) i++;
+    return i;
+}
 
 size_t is_in(const char* string_1, const char* string_2) {
     if (strlen(string_1) < strlen(string_2)) {
@@ -34,12 +39,12 @@ int main(int argc, char* argv[]) {
     char *path_to_file = argv[1];
     size_t parts = 0;
 
-    char* string = (char*)(malloc(sizeof(char) * 2350000));
+    char* string = (char*)(malloc(sizeof(char) * 2400000));
     if (!string) {
         free(string);
         return -1;
     }
-    char* string_to = (char*)(malloc(sizeof(char) * 2350000));
+    char* string_to = (char*)(malloc(sizeof(char) * 2400000));
     if (!string_to) {
         free(string_to);
         free(string);
@@ -81,7 +86,7 @@ int main(int argc, char* argv[]) {
     }
 
     while (!feof(file_to_pars)) {
-        fgets(string, 2350000, file_to_pars);
+        fgets(string, 2400000, file_to_pars);
         bool already_found_smth = false;
 
         if (from_just_found) {
