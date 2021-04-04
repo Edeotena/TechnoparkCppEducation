@@ -1,12 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdbool.h>
-
-size_t strlen(const char* string) {
-    size_t i = 0;
-    while (*string++) i++;
-    return i;
-}
 
 size_t is_in(const char* string_1, const char* string_2) {
     if (strlen(string_1) < strlen(string_2)) {
