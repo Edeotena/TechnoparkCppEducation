@@ -6,8 +6,8 @@ variables:
 stages:
   - test_style
   - build
-  - test_mem
   - test_bin
+  - test_mem
 
 test_style:
   stage: test_style
@@ -22,14 +22,13 @@ build:
     paths:
       - ${BIN_NAME}
 
-test_mem:
-  stage: test_mem
-  script:
-    - apt-get update && apt-get install -y valgrind
-    - ./btests/run.sh ./${BIN_NAME} --memcheck
-
 test_bin:
   stage: test_bin
   script:
     - ./btests/run.sh ./${BIN_NAME}
 
+test_mem:
+  stage: test_mem
+  script:
+    - apt-get update && apt-get install -y valgrind
+    - ./btests/run.sh ./${BIN_NAME} --memcheck
