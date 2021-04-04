@@ -34,12 +34,12 @@ int main(int argc, char* argv[]) {
     char *path_to_file = argv[1];
     size_t parts = 0;
 
-    char* string = (char*)(malloc(sizeof(char) * 2400000));
+    char* string = (char*)(malloc(sizeof(char) * 2350000));
     if (!string) {
         free(string);
         return -1;
     }
-    char* string_to = (char*)(malloc(sizeof(char) * 2400000));
+    char* string_to = (char*)(malloc(sizeof(char) * 2350000));
     if (!string_to) {
         free(string_to);
         free(string);
@@ -81,7 +81,7 @@ int main(int argc, char* argv[]) {
     }
 
     while (!feof(file_to_pars)) {
-        fgets(string, 2400000, file_to_pars);
+        fgets(string, 2350000, file_to_pars);
         bool already_found_smth = false;
 
         if (from_just_found) {
