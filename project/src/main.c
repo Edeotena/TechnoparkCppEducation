@@ -34,17 +34,51 @@ int main(int argc, char* argv[]) {
     char *path_to_file = argv[1];
     size_t parts = 0;
 
-    FILE* file_to_pars = fopen(path_to_file, "r");
-    if (!file_to_pars) {
+    char* string = (char*)(malloc(sizeof(char) * 2400000));
+    if (!string) {
+        free(string);
+        return -1;
+    }
+    char* string_to = (char*)(malloc(sizeof(char) * 2400000));
+    if (!string_to) {
+        free(string_to);
+        free(string);
+        return -1;
+    }
+    char* string_from = (char*)(malloc(sizeof(char) * 1024));
+    if (!string_from) {
+        free(string_from);
+        free(string_to);
+        free(string);
+        return -1;
+    }
+    char* string_date = (char*)(malloc(sizeof(char) * 1024));
+    if (!string_date) {
+        free(string_date);
+        free(string_from);
+        free(string_to);
+        free(string);
+        return -1;
+    }
+    char* string_boundary = (char*)(malloc(sizeof(char) * 1024));
+    if (!string_boundary) {
+        free(string_boundary);
+        free(string_date);
+        free(string_from);
+        free(string_to);
+        free(string);
         return -1;
     }
 
-    char* string = (char*)(malloc(sizeof(char) * 2400000));
-    char* string_to = (char*)(malloc(sizeof(char) * 2400000));
-    char* string_from = (char*)(malloc(sizeof(char) * 1024));
-    char* string_date = (char*)(malloc(sizeof(char) * 1024));
-    char* string_boundary = (char*)(malloc(sizeof(char) * 1024));
-
+    FILE* file_to_pars = fopen(path_to_file, "r");
+    if (!file_to_pars) {
+        free(string_boundary);
+        free(string_date);
+        free(string_from);
+        free(string_to);
+        free(string);
+        return -1;
+    }
 
     while (!feof(file_to_pars)) {
         fgets(string, 2400000, file_to_pars);
