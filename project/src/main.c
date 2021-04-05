@@ -69,11 +69,11 @@ int main(int argc, char* argv[]) {
         free(string);
         return -1;
     }
-    memset(string, '\0', 2350000);
-    memset(string_from, '\0', 2350000);
-    memset(string_to, '\0', 2350000);
-    memset(string_date, '\0', 1023);
-    memset(string_boundary, '\0', 1023);
+    memset(string, '\0', 2400000);
+    memset(string_to, '\0', 2400000);
+    memset(string_from, '\0', 1024);
+    memset(string_date, '\0', 1024);
+    memset(string_boundary, '\0', 1024);
 
     FILE* file_to_pars = fopen(path_to_file, "r");
     if (!file_to_pars) {
