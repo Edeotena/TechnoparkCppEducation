@@ -118,7 +118,7 @@ int main(int argc, char* argv[]) {
                 to_just_found = true;
                 size_t size_of_string = strlen(string_to);
                 for (size_t j = 0; j < strlen(string) + 1; ++j) {
-                    if (string[i] == '\n' || string[i] == '\r') {
+                    if (string[i - 1] == '\n' || string[i - 1] == '\r') {
                         break;
                     }
                     string_to[size_of_string + j] = string[i - 1];
@@ -137,7 +137,7 @@ int main(int argc, char* argv[]) {
                 date_just_found = true;
                 size_t size_of_string = strlen(string_date);
                 for (size_t j = 0; j < strlen(string) + 1; ++j) {
-                    if (string[i] == '\n' || string[i] == '\r') {
+                    if (string[i - 1] == '\n' || string[i - 1] == '\r') {
                         break;
                     }
                     string_date[size_of_string + j] = string[i - 1];
