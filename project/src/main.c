@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 int find_boundary(const char* string) {
-    if (strstr(string, " boundary=") || strstr(string, "    boundary=") ||
+    if (strstr(string, " boundary=") || strstr(string, "\tboundary=") ||
         strstr(string, ",boundary=") || strstr(string, ";boundary=") || strstr(string, " BOUNDARY=")) {
         int k = 0;
         while (true) {
@@ -201,13 +201,14 @@ int main(int argc, char* argv[]) {
                 size_t j = 0;
                 size_t qoutes_count = 0;
                 size_t i = find_boundary(string);
-                for (; i < strlen(string); ++i) {
+                size_t size = strlen(string);
+                for (; i < size; ++i) {
                     if (string[i] == '"') {
                         i++;
                         qoutes_count++;
                     }
                     if (string[i] == '/' && string[i + 1] == '"') {
-                        i+=2;
+                        i += 2;
                         qoutes_count++;
                     }
                     if (string[i] == ' ') {
