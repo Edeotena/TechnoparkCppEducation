@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 int find_boundary(const char* string) {
-    if (strstr(string, " boundary=") || strstr(string, "	boundary=") ||
+    if (strstr(string, " boundary=") || strstr(string, "    boundary=") ||
         strstr(string, ",boundary=") || strstr(string, ";boundary=") || strstr(string, " BOUNDARY=")) {
         int k = 0;
         while (true) {
@@ -92,7 +92,8 @@ int main(int argc, char* argv[]) {
             if (i) {
                 from_just_found = true;
                 size_t size_of_string = strlen(string_from);
-                for (size_t j = 0; j < strlen(string) + 1; ++j) {
+                size_t size = strlen(string) + 1;
+                for (size_t j = 0; j < size; ++j) {
                     if (string[i - 1] == '\n' || string[i - 1] == '\r') {
                         break;
                     }
@@ -111,7 +112,8 @@ int main(int argc, char* argv[]) {
             if (i) {
                 to_just_found = true;
                 size_t size_of_string = strlen(string_to);
-                for (size_t j = 0; j < strlen(string) + 1; ++j) {
+                size_t size = strlen(string) + 1;
+                for (size_t j = 0; j < size; ++j) {
                     if (string[i - 1] == '\n' || string[i - 1] == '\r') {
                         break;
                     }
@@ -130,7 +132,8 @@ int main(int argc, char* argv[]) {
             if (i) {
                 date_just_found = true;
                 size_t size_of_string = strlen(string_date);
-                for (size_t j = 0; j < strlen(string) + 1; ++j) {
+                size_t size = strlen(string) + 1;
+                for (size_t j = 0; j < size; ++j) {
                     if (string[i - 1] == '\n' || string[i - 1] == '\r') {
                         break;
                     }
@@ -145,7 +148,8 @@ int main(int argc, char* argv[]) {
             while (string[3 + space_count] == ' ') {
                 ++space_count;
             }
-            for (size_t i = 0; i < strlen(string) - 4 - space_count; i++) {
+            size_t size = strlen(string) - 4 - space_count;
+            for (size_t i = 0; i < size; i++) {
                 if (string[i + 3 + space_count] == '\r') {
                     break;
                 }
@@ -162,7 +166,8 @@ int main(int argc, char* argv[]) {
             while (string[5 + space_count] == ' ') {
                 ++space_count;
             }
-            for (size_t i = 0; i < strlen(string) - 6 - space_count; i++) {
+            size_t size = strlen(string) - 6 - space_count;
+            for (size_t i = 0; i < size; i++) {
                 if (string[i + 5 + space_count] == '\r') {
                     break;
                 }
@@ -179,7 +184,8 @@ int main(int argc, char* argv[]) {
             while (string[5 + space_count] == ' ') {
                 ++space_count;
             }
-            for (size_t i = 0; i < strlen(string) - 6 - space_count; i++) {
+            size_t size = strlen(string) - 6 - space_count;
+            for (size_t i = 0; i < size; i++) {
                 if (string[i + 5 + space_count] == '\r') {
                     break;
                 }
