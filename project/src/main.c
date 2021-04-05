@@ -93,18 +93,18 @@ int main(int argc, char* argv[]) {
             from_just_found = false;
             size_t i = 0;
             while (string[i] == ' ') {
-                i++;
+                ++i;
             }
             if (i) {
                 from_just_found = true;
-            }
-            size_t size_of_string = strlen(string_from);
-            for (size_t j = 0; j < strlen(string) + 1; ++j) {
-                if (string[i - 1 ] == '\n' || string[i - 1] == '\r') {
-                    break;
+                size_t size_of_string = strlen(string_from);
+                for (size_t j = 0; j < strlen(string) + 1; ++j) {
+                    if (string[i - 1] == '\n' || string[i - 1] == '\r') {
+                        break;
+                    }
+                    string_from[size_of_string + j] = string[i - 1];
+                    i++;
                 }
-                string_from[size_of_string + j] = string[i - 1];
-                i++;
             }
         }
 
@@ -116,14 +116,14 @@ int main(int argc, char* argv[]) {
             }
             if (i) {
                 to_just_found = true;
-            }
-            size_t size_of_string = strlen(string_to);
-            for (size_t j = 0; j < strlen(string) + 1; ++j) {
-                if (string[i - 1 ] == '\n' || string[i - 1] == '\r') {
-                    break;
+                size_t size_of_string = strlen(string_to);
+                for (size_t j = 0; j < strlen(string); ++j) {
+                    if (string[i] == '\n' || string[i] == '\r') {
+                        break;
+                    }
+                    string_to[size_of_string + j] = string[i - 1];
+                    i++;
                 }
-                string_to[size_of_string + j] = string[i - 1];
-                i++;
             }
         }
 
@@ -135,14 +135,14 @@ int main(int argc, char* argv[]) {
             }
             if (i) {
                 date_just_found = true;
-            }
-            size_t size_of_string = strlen(string_date);
-            for (size_t j = 0; j < strlen(string) + 1; ++j) {
-                if (string[i - 1 ] == '\n' || string[i - 1] == '\r') {
-                    break;
+                size_t size_of_string = strlen(string_date);
+                for (size_t j = 0; j < strlen(string); ++j) {
+                    if (string[i] == '\n' || string[i] == '\r') {
+                        break;
+                    }
+                    string_date[size_of_string + j] = string[i - 1];
+                    i++;
                 }
-                string_date[size_of_string + j] = string[i - 1];
-                i++;
             }
         }
 
