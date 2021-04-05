@@ -196,31 +196,33 @@ int main(int argc, char* argv[]) {
             date_just_found = true;
         }
 
-        if (!already_found_smth && (is_in(string, " boundary=") || is_in(string, "	boundary=") ||
-        	 is_in(string, ";boundary=")) && !multi_parts) {
-            size_t j = 0;
-            size_t qoutes_count = 0;
-            for (size_t i = is_in(string, "boundary=") + 8; i < strlen(string); ++i) {
-                if (string[i] == '"') {
-                    i++;
-                    qoutes_count++;
-                }
-                if (string[i] == '/' && string[i + 1] == '"') {
-                    i+=2;
-                    qoutes_count++;
-                }
-                if (string[i] == ' ') {
-                    i++;
-                }
-                if (qoutes_count == 2) {
-                    while (string[i] != '\r' && string[i]!= '\n') {
+        if (!already_found_smth && !multi_parts) {
+            if (is_in(string, " boundary=") || is_in(string, "	boundary=") ||
+        	    is_in(string, ";boundary=")) {
+                size_t j = 0;
+                size_t qoutes_count = 0;
+                for (size_t i = is_in(string, "boundary=") + 8; i < strlen(string); ++i) {
+                    if (string[i] == '"') {
+                        i++;
+                        qoutes_count++;
+                    }
+                    if (string[i] == '/' && string[i + 1] == '"') {
+                        i+=2;
+                        qoutes_count++;
+                    }
+                    if (string[i] == ' ') {
                         i++;
                     }
+                    if (qoutes_count == 2) {
+                        while (string[i] != '\r' && string[i]!= '\n') {
+                            i++;
+                        }
+                    }
+                    string_boundary[j] = string[i];
+                    j++;
                 }
-                string_boundary[j] = string[i];
-                j++;
+                multi_parts = true;
             }
-            multi_parts = true;
         }
 
         if (strlen(string) <= 2) {
