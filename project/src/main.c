@@ -3,34 +3,28 @@
 #include <string.h>
 #include <stdbool.h>
 
-size_t is_in(const char* string_1, const char* string_2) {
-    if (strlen(string_1) < strlen(string_2)) {
-        return 0;
-    }
-
-    for (size_t i = 0; i < strlen(string_1) - strlen(string_2) + 1; ++i) {
-        size_t o = 0;
-
-        for (size_t j = 0; j < strlen(string_2); ++j) {
-            if (string_1[i+j] == string_2[j] || string_1[i+j] == string_2[j] - 32) {
-                o++;
+int find_boundary(const char* string) {
+    if (strstr(string, " boundary=") || strstr(string, "	boundary=") ||
+        strstr(string, ",boundary=") || strstr(string, ";boundary=") || strstr(string, " BOUNDARY=")) {
+        int k = 0;
+        while (true) {
+            if ((string[k] == 'y' || string[k + 1] == 'y' ||
+                string[k] == 'Y' || string[k + 1] == 'Y')  && string[k + 2] == '=') {
+                break;
             }
+            ++k;
         }
-
-        if (o == strlen(string_2)) {
-            return i + 1;
-        }
+        return k + 3;
     }
-
     return 0;
 }
 
 int main(int argc, char* argv[]) {
-	if (argc != 2) {
-		return -1;
-	}
+    if (argc != 2) {
+        return -1;
+    }
     bool multi_parts = false, to_found = false, from_found = false, date_found = false,
-    	 from_just_found = false, to_just_found = false, date_just_found = false;
+        from_just_found = false, to_just_found = false, date_just_found = false;
     char *path_to_file = argv[1];
     size_t parts = 0;
 
@@ -147,10 +141,10 @@ int main(int argc, char* argv[]) {
         }
 
         if (string[0] == 'T' && string[1] == 'o' && string[2] == ':' && !to_found) {
-        	size_t space_count = 0;
-        	while (string[3 + space_count] == ' ') {
-        		++space_count;
-        	}
+            size_t space_count = 0;
+            while (string[3 + space_count] == ' ') {
+                ++space_count;
+            }
             for (size_t i = 0; i < strlen(string) - 4 - space_count; i++) {
                 if (string[i + 3 + space_count] == '\r') {
                     break;
@@ -163,11 +157,11 @@ int main(int argc, char* argv[]) {
         }
 
         if (string[0] == 'F' && string[1] == 'r' && string[2] == 'o' &&
-        	string[3] == 'm' && string[4] == ':' && !from_found && !already_found_smth) {
-        	size_t space_count = 0;
-        	while (string[5 + space_count] == ' ') {
-        		++space_count;
-        	}
+            string[3] == 'm' && string[4] == ':' && !from_found && !already_found_smth) {
+            size_t space_count = 0;
+            while (string[5 + space_count] == ' ') {
+                ++space_count;
+            }
             for (size_t i = 0; i < strlen(string) - 6 - space_count; i++) {
                 if (string[i + 5 + space_count] == '\r') {
                     break;
@@ -180,11 +174,11 @@ int main(int argc, char* argv[]) {
         }
 
         if (string[0] == 'D' && string[1] == 'a' && string[2] == 't' &&
-        	string[3] == 'e' && string[4] == ':'  && !date_found && !already_found_smth) {
-        	size_t space_count = 0;
-        	while (string[5 + space_count] == ' ') {
-        		++space_count;
-        	}
+            string[3] == 'e' && string[4] == ':'  && !date_found && !already_found_smth) {
+            size_t space_count = 0;
+            while (string[5 + space_count] == ' ') {
+                ++space_count;
+            }
             for (size_t i = 0; i < strlen(string) - 6 - space_count; i++) {
                 if (string[i + 5 + space_count] == '\r') {
                     break;
@@ -197,11 +191,11 @@ int main(int argc, char* argv[]) {
         }
 
         if (!already_found_smth && !multi_parts) {
-            if (is_in(string, " boundary=") || is_in(string, "	boundary=") ||
-        	    is_in(string, ";boundary=")) {
+            if (find_boundary(string)) {
                 size_t j = 0;
                 size_t qoutes_count = 0;
-                for (size_t i = is_in(string, "boundary=") + 8; i < strlen(string); ++i) {
+                size_t i = find_boundary(string);
+                for (; i < strlen(string); ++i) {
                     if (string[i] == '"') {
                         i++;
                         qoutes_count++;
@@ -233,7 +227,7 @@ int main(int argc, char* argv[]) {
     if (multi_parts) {
         while (!feof(file_to_pars)) {
             fgets(string, 1024, file_to_pars);
-            if (is_in(string, string_boundary)) {
+            if (strstr(string, string_boundary)) {
                 ++parts;
             }
         }
