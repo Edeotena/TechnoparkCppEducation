@@ -3,6 +3,7 @@
 #include <vector>
 #include <istream>
 #include <iomanip>
+#include <limits>
 
 namespace prep {
 class Matrix {
