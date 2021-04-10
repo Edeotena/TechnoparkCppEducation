@@ -1,0 +1,73 @@
+Start testing: Apr 10 21:50 MSK
+----------------------------------------------------------
+1/2 Testing: BaseTest
+1/2 Test: BaseTest
+Command: "/home/timur/prep-2021.01/project/tests/tests" "/home/timur/prep-2021.01/project/tests/data" "--gtest_filter=-*Extra*"
+Directory: /home/timur/prep-2021.01/project/tests
+"BaseTest" start time: Apr 10 21:50 MSK
+Output:
+----------------------------------------------------------
+Note: Google Test filter = -*Extra*
+[==========] Running 16 tests from 4 test suites.
+[----------] Global test environment set-up.
+[----------] 6 tests from MatrixBaseSuite
+[ RUN      ] MatrixBaseSuite.CreationFromFile
+"/home/timur/prep-2021.01/project/tests/data/matrix_creation/case_0.txt"
+"/home/timur/prep-2021.01/project/tests/data/matrix_creation/case_1.txt"
+[       OK ] MatrixBaseSuite.CreationFromFile (0 ms)
+[ RUN      ] MatrixBaseSuite.CreationFromScratch
+[       OK ] MatrixBaseSuite.CreationFromScratch (0 ms)
+[ RUN      ] MatrixBaseSuite.ElementAccess
+[       OK ] MatrixBaseSuite.ElementAccess (0 ms)
+[ RUN      ] MatrixBaseSuite.CopyAssign
+[       OK ] MatrixBaseSuite.CopyAssign (0 ms)
+[ RUN      ] MatrixBaseSuite.Store
+[       OK ] MatrixBaseSuite.Store (1 ms)
+[ RUN      ] MatrixBaseSuite.CompareNeg
+[       OK ] MatrixBaseSuite.CompareNeg (0 ms)
+[----------] 6 tests from MatrixBaseSuite (1 ms total)
+
+[----------] 2 tests from MatrixBaseNegSuite
+[ RUN      ] MatrixBaseNegSuite.CreationFromFile
+"/home/timur/prep-2021.01/project/tests/data/matrix_creation_neg/corrupted_data.txt"
+"/home/timur/prep-2021.01/project/tests/data/matrix_creation_neg/bad_format.txt"
+"/home/timur/prep-2021.01/project/tests/data/matrix_creation_neg/empty_file.txt"
+[       OK ] MatrixBaseNegSuite.CreationFromFile (0 ms)
+[ RUN      ] MatrixBaseNegSuite.OutOfRangeAccess
+[       OK ] MatrixBaseNegSuite.OutOfRangeAccess (0 ms)
+[----------] 2 tests from MatrixBaseNegSuite (0 ms total)
+
+[----------] 5 tests from MatrixMathBaseSuite
+[ RUN      ] MatrixMathBaseSuite.Sum
+[       OK ] MatrixMathBaseSuite.Sum (1 ms)
+[ RUN      ] MatrixMathBaseSuite.Sub
+[       OK ] MatrixMathBaseSuite.Sub (0 ms)
+[ RUN      ] MatrixMathBaseSuite.ScalarMul
+[       OK ] MatrixMathBaseSuite.ScalarMul (0 ms)
+[ RUN      ] MatrixMathBaseSuite.Transp
+[       OK ] MatrixMathBaseSuite.Transp (1 ms)
+[ RUN      ] MatrixMathBaseSuite.MatrixMul
+[       OK ] MatrixMathBaseSuite.MatrixMul (0 ms)
+[----------] 5 tests from MatrixMathBaseSuite (2 ms total)
+
+[----------] 3 tests from MatrixMathBaseNegSuite
+[ RUN      ] MatrixMathBaseNegSuite.Sum
+[       OK ] MatrixMathBaseNegSuite.Sum (0 ms)
+[ RUN      ] MatrixMathBaseNegSuite.Sub
+[       OK ] MatrixMathBaseNegSuite.Sub (0 ms)
+[ RUN      ] MatrixMathBaseNegSuite.MatrixMul
+[       OK ] MatrixMathBaseNegSuite.MatrixMul (1 ms)
+[----------] 3 tests from MatrixMathBaseNegSuite (1 ms total)
+
+[----------] Global test environment tear-down
+[==========] 16 tests from 4 test suites ran. (4 ms total)
+[  PASSED  ] 16 tests.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"BaseTest" end time: Apr 10 21:50 MSK
+"BaseTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Apr 10 21:50 MSK
