@@ -3,29 +3,30 @@
 // Init/release operations
 
 Matrix* create_matrix(size_t rows, size_t cols) {
-    void* test_ptr_m = malloc(sizeof(struct Matrix));
-    if (test_ptr_m == NULL) {
+    Matrix* matrix = (Matrix*)malloc(sizeof(struct Matrix));
+    if (matrix == NULL) {
         return NULL;
     }
 
-    Matrix* matrix = (Matrix*)test_ptr_m;
     matrix->rows = rows;
     matrix->cols = cols;
 
-    void** test_ptr_1 = (void**)malloc(rows * sizeof(double));
-    if (test_ptr_1 == NULL) {
-        free(test_ptr_m);
+    matrix->matrix_content  = (double**)malloc(rows * sizeof(double*));
+    if (matrix->matrix_content  == NULL) {
+        free(matrix);
         return NULL;
     }
 
-    matrix->matrix_content = (double**)test_ptr_1;
-
     for (size_t i = 0; i < rows; ++i) {
-        void* test_ptr_2 = malloc(cols * sizeof(double));
-        if (test_ptr_2 == NULL) {
+        matrix->matrix_content[i] = (double*)malloc(cols * sizeof(double*));
+        if (matrix->matrix_content[i] == NULL) {
+            for (size_t j = 0; j < i; ++j) {
+                free(matrix->matrix_content[j]);
+            }
+            free(matrix->matrix_content);
+            free(matrix);
             return NULL;
         }
-        matrix->matrix_content[i] = (double*)test_ptr_2;
     }
 
     return matrix;
@@ -34,49 +35,27 @@ Matrix* create_matrix(size_t rows, size_t cols) {
 Matrix* create_matrix_from_file(const char* path_file) {
     FILE* file_to_read = fopen(path_file, "r");
 
-    void* test_ptr_m = malloc(sizeof(struct Matrix));
-    if (test_ptr_m == NULL) {
+    size_t rows_from_file, cols_from_file;
+
+    if (fscanf(file_to_read, "%zu %zu", &rows_from_file, &cols_from_file) != 2) {
         fclose(file_to_read);
         return NULL;
     }
 
-    Matrix* matrix = (Matrix*)test_ptr_m;
-
-    if (file_to_read == NULL) {
-        free(test_ptr_m);
-        return NULL;
-    }
-
-    if (fscanf(file_to_read, "%zu %zu", &matrix->rows, &matrix->cols) != 2) {
-        fclose(file_to_read);
-        free(test_ptr_m);
-        return NULL;
-    }
-
-    void** test_ptr_1 = (void**)malloc(matrix->rows * sizeof(double));
-    if (test_ptr_1 == NULL) {
-        fclose(file_to_read);
-        free(test_ptr_m);
-        return NULL;
-    }
-
-    matrix->matrix_content = (double**)test_ptr_1;
+    Matrix* matrix = create_matrix(rows_from_file, cols_from_file);
 
     for (size_t i = 0; i < matrix->rows; ++i) {
-        void* test_ptr_2 = malloc(matrix->cols * sizeof(double));
-        if (test_ptr_2 == NULL) {
-            fclose(file_to_read);
-            return NULL;
-        }
-        matrix->matrix_content[i] = (double*)test_ptr_2;
         for (size_t j = 0; j <matrix->cols; ++j) {
             if (fscanf(file_to_read, "%lf", &matrix->matrix_content[i][j]) != 1) {
                 fclose(file_to_read);
+                free_matrix(matrix);
                 return NULL;
             }
         }
     }
+
     if (fclose(file_to_read) != 0) {
+        free_matrix(matrix);
         return NULL;
     }
 
@@ -162,6 +141,10 @@ Matrix* sum(const Matrix* l, const Matrix* r) {
 Matrix* sub(const Matrix* l, const Matrix* r) {
     Matrix* new_matrix = create_matrix(l->rows, l->cols);
 
+    if (new_matrix == NULL) {
+        return NULL;
+    }
+
     for (size_t i = 0; i < l->rows; ++i) {
         for (size_t j = 0; j < l->cols; ++j) {
             new_matrix->matrix_content[i][j] = l->matrix_content[i][j] - r->matrix_content[i][j];
@@ -177,6 +160,10 @@ Matrix* mul(const Matrix* l, const Matrix* r) {
     }
 
     Matrix* new_matrix = create_matrix(l->rows, r->cols);
+
+    if (new_matrix == NULL) {
+        return NULL;
+    }
 
     for (size_t i = 0; i < l->rows; ++i) {
         for (size_t j = 0; j < r->cols; ++j) {
@@ -203,22 +190,6 @@ void less_double_arr(double **matrix, double **new_matrix, size_t row, size_t co
                 skip_j = 1;
             }
             new_matrix[i][j] = matrix[i + skip_i][j + skip_j];
-        }
-    }
-}
-
-void less_matrix(const Matrix* matrix, Matrix* new_matrix, size_t row, size_t col) {
-    size_t skip_i = 0;
-    for (size_t i = 0; i < new_matrix->rows; ++i) {
-        if (i == row) {
-            skip_i = 1;
-        }
-        size_t skip_j = 0;
-        for (size_t j = 0; j < new_matrix->cols; ++j) {
-            if (j == col) {
-                skip_j = 1;
-            }
-            new_matrix->matrix_content[i][j] = matrix->matrix_content[i + skip_i][j + skip_j];
         }
     }
 }
@@ -263,6 +234,10 @@ double get_det(double **matrix, size_t size) {
 }
 
 int det(const Matrix* matrix, double* val) {
+    if (matrix->rows != matrix->cols) {
+        return (-1);
+    }
+
     *val = get_det(matrix->matrix_content, matrix->rows);
 
     return 0;
@@ -270,11 +245,16 @@ int det(const Matrix* matrix, double* val) {
 
 Matrix* adj(const Matrix* matrix) {
     Matrix* new_matrix = create_matrix(matrix->rows, matrix->cols);
+
+    if (new_matrix == NULL) {
+            return NULL;
+    }
+
     int det_power;
     for (size_t i = 0; i < new_matrix->rows; ++i) {
         for (size_t j = 0; j < new_matrix->cols; ++j) {
             Matrix* additional_matrix = create_matrix(new_matrix->rows - 1, new_matrix->cols - 1);
-            less_matrix(matrix, additional_matrix, j, i);
+            less_double_arr(matrix->matrix_content, additional_matrix->matrix_content, j, i, matrix->rows);
             if ((i + j) % 2 == 0) {
                 det_power = 1;
             } else {
@@ -292,12 +272,33 @@ Matrix* adj(const Matrix* matrix) {
 Matrix* inv(const Matrix* matrix) {
     if (matrix->rows == 1) {
         Matrix* new_matrix = create_matrix(matrix->rows, matrix->cols);
+
+        if (new_matrix == NULL) {
+            return NULL;
+        }
+
+        if (matrix->matrix_content[0][0] == 0) {
+            free_matrix(new_matrix);
+            return NULL;
+        }
+
         new_matrix->matrix_content[0][0] = 1 / matrix->matrix_content[0][0];
         return new_matrix;
     }
 
     Matrix* additional_matrix = adj(matrix);
-    Matrix* new_matrix = mul_scalar(additional_matrix, 1 / get_det(matrix->matrix_content, matrix->rows));
+
+    if (additional_matrix == NULL) {
+        return NULL;
+    }
+
+    double matrix_det = get_det(matrix->matrix_content, matrix->rows);
+    if (matrix_det == 0) {
+        free_matrix(additional_matrix);
+        return NULL;
+    }
+
+    Matrix* new_matrix = mul_scalar(additional_matrix, 1 / matrix_det);
 
     free_matrix(additional_matrix);
 
