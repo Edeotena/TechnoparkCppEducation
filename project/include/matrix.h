@@ -5,6 +5,9 @@
 #include <iomanip>
 #include <limits>
 
+#define EPS 0.0000001
+#define DETPOWER 1
+
 namespace prep {
 class Matrix {
  private:

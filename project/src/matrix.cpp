@@ -6,8 +6,8 @@ namespace prep {
     rows(rows), cols(cols) {
         this->matrix_content.resize(rows);
 
-        for (size_t i = 0; i < rows; ++i) {
-            this->matrix_content[i].resize(cols);
+        for (auto& i : this->matrix_content) {
+            i.resize(cols);
         }
     }
 
@@ -22,17 +22,17 @@ namespace prep {
 
         this->matrix_content.resize(rows);
 
-        for (size_t i = 0; i < this->rows; ++i) {
-               this->matrix_content[i].resize(this->cols);
+        for (auto& i : this->matrix_content) {
+            i.resize(cols);
 
-               for (size_t j =  0; j < this->cols; ++j) {
-                   std::string string_to_transform;
-                is >> string_to_transform;
+               for (auto& j : i) {
+                    std::string string_to_transform;
+                    is >> string_to_transform;
 
                 try {
-                       this->matrix_content[i][j] = std::stod(string_to_transform);
+                       j = std::stod(string_to_transform);
                 }
-                catch (...) {
+                catch (std::invalid_argument& stod_exception) {
                        throw InvalidMatrixStream();
                 }
             }
@@ -69,7 +69,7 @@ namespace prep {
         }
         for (size_t i = 0; i < this->rows; ++i) {
             for (size_t j = 0; j < this->cols; ++j) {
-                if (this->matrix_content[i][j] - rhs.matrix_content[i][j] > 0.0000001 || this->matrix_content[i][j] - rhs.matrix_content[i][j] < -0.0000001) {
+                if (this->matrix_content[i][j] - rhs.matrix_content[i][j] > EPS || this->matrix_content[i][j] - rhs.matrix_content[i][j] < -EPS) {
                     return false;
                 }
             }
@@ -166,10 +166,10 @@ namespace prep {
             throw InvalidMatrixStream();
         }
 
-        for (size_t i = 0; i < matrix.rows; i++) {
-            for (size_t j = 0; j < matrix.cols; j++) {
+        for (auto& i : matrix.matrix_content) {
+            for (auto& j : i) {
                     auto maxdigitsdouble = std::numeric_limits<double>::digits10;
-                    if (!(os << std::setprecision(maxdigitsdouble) << matrix.matrix_content[i][j] << " ").good()) {
+                    if (!(os << std::setprecision(maxdigitsdouble) << j << " ").good()) {
                         throw InvalidMatrixStream();
                     }
             }
@@ -224,7 +224,7 @@ namespace prep {
             return temp_det;
         }
 
-        int det_power = 1;
+        int det_power = DETPOWER;
 
         Matrix next_matrix(matrix.getRows() - 1, matrix.getCols() - 1);
 
@@ -254,7 +254,7 @@ namespace prep {
             throw DimensionMismatch(main_matrix);
         }
 
-        int det_power = 1;
+        int det_power = DETPOWER;
 
         for (size_t i = 0; i < this->rows; ++i) {
             for (size_t j = 0; j < this->cols; ++j) {
