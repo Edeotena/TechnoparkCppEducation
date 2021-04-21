@@ -17,7 +17,7 @@ TST_HDRS = \
 
 TST_SRCS = \
            project/src/matrix.c \
-		   project/tests/src/*.c
+           project/tests/src/*.c
 
 .PHONY: all main test clean
 
