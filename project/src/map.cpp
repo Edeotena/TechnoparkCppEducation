@@ -57,7 +57,7 @@ namespace map {
     }
 
     void map::make_actions(const std::string& action) {
-    	size_t size = enemies.size();
+        size_t size = enemies.size();
         if (action == "move left") {
             our_player.move_x(-1);
         }
