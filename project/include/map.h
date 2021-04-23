@@ -8,6 +8,7 @@
 
 #include "player.h"
 #include "enemy.h"
+#include "armor.h"
 
 #define WRONG_INPUT (-1)
 
@@ -18,12 +19,20 @@ class map {
     int size_of_y;
     player::player our_player;
     std::vector <enemy::enemy> enemies;
+    std::vector <armor::armor> armors_on_map;
     int current_enemy = -1;
+    int current_armor = -1;
 
  public:
     explicit map(const std::string& filename);
 
-    bool show_actions();
+    ~map() = default;
+
+    int get_x() const;
+
+    int get_y() const;
+
+    void show_actions(bool is_empty);
 
     void make_actions(const std::string& action);
 
