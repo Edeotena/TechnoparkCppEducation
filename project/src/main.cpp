@@ -6,7 +6,7 @@ int main(int argc, const char** argv) {
     bool armor = false;
 
     if (argc == 4) {
-    	armor = true;
+        armor = true;
     }
 
     for (int i = 0; i < argc; ++i) {
