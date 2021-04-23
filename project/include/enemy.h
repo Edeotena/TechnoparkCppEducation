@@ -1,30 +1,36 @@
-#pragma  once
+#pragma once
 
-#include <string>
-
-namespace enemy {
-class enemy {
+namespace player {
+class player {
  private:
-    int x, y;
-    int health;
-    int damage;
-    std::string enemy_name;
+    int health = 100;
+    int x = 0, y = 0;
+    int armor_count = 0, weight = 0;
+    bool armor_equipment[5];
 
  public:
-    enemy();
+    player();
 
-    enemy(const std::string& enemy_name, const int x, const int y);
+    ~player() = default;
+
+    void move_x(const int x);
+
+    void move_y(const int y);
 
     int get_x() const;
 
     int get_y() const;
 
-    std::string get_name() const;
-
     int get_health() const;
 
-    int get_damage() const;
+    void take_damage(const int damage);
 
-    void take_damage();
+    int get_armor() const;
+
+    bool have_armor(const int armor_number) const;
+
+    bool add_armor(const int armor_number, const int armor_count, const int armor_weight);
+
+    bool throw_armor(const int armor_number, const int armor_count, const int armor_weight);
 };
-}  // namespace enemy
+}  // namespace player
