@@ -30,7 +30,7 @@ namespace map {
         }
     }
 
-    void map::show_actions(bool is_empty) {
+    void map::show_actions(bool is_empty, bool is_armor) {
         bool action_made = false;
         bool enemy_fight = false;
 
@@ -73,7 +73,11 @@ namespace map {
             }
         }
 
-        std::cout << our_player.get_x() << " x " << our_player.get_y() << ", hp: " << our_player.get_health() << ", armor: " << our_player.get_armor() << " > ";
+        if (is_armor) {
+            std::cout << our_player.get_x() << " x " << our_player.get_y() << ", hp: " << our_player.get_health() << ", armor: " << our_player.get_armor() << " > ";
+        } else {
+            std::cout << our_player.get_x() << " x " << our_player.get_y() << ", hp: " << our_player.get_health() << " > ";
+        }
 
         if (!is_empty) {
             std::cout << std::endl;
