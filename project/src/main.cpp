@@ -2,13 +2,14 @@
 
 
 int main(int argc, const char** argv) {
-    if (argc != 4) {
-        return (-1);
+    int number = 0;
+    bool armor = false;
+
+    if (argc == 4) {
+    	armor = true;
     }
 
-    int number = 0;
-
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < argc; ++i) {
         if (argv[i][0] == '.') {
             number = i;
         }
@@ -21,9 +22,9 @@ int main(int argc, const char** argv) {
     do {
         std::cout << "Supported actions:";
         if (getline(std::cin, action)) {
-            new_map.show_actions(false);
+            new_map.show_actions(false, armor);
         } else {
-            new_map.show_actions(true);
+            new_map.show_actions(true, armor);
             return 0;
         }
         new_map.make_actions(action);
