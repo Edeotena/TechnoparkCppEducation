@@ -32,7 +32,7 @@ class map {
 
     int get_y() const;
 
-    void show_actions(bool is_empty);
+    void show_actions(bool is_empty, bool is_armor);
 
     void make_actions(const std::string& action);
 
