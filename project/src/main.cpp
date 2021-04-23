@@ -2,25 +2,34 @@
 
 
 int main(int argc, const char** argv) {
-    if (argc != 3 || strcmp(argv[1], "--map") != 0) {
-        return WRONG_INPUT;
+    if (argc != 4) {
+        return (-1);
     }
 
-    map::map new_map(argv[2]);
+    int number = 0;
+
+    for (int i = 0; i < 4; ++i) {
+        if (argv[i][0] == '.') {
+            number = i;
+        }
+    }
+
+    map::map new_map(argv[number]);
+
     std::string action;
 
     do {
-        if (new_map.show_actions() && getline(std::cin, action)) {
-            std::cout << std::endl;
+        std::cout << "Supported actions:";
+        if (getline(std::cin, action)) {
+            new_map.show_actions(false);
         } else {
-            break;
+            new_map.show_actions(true);
+            return 0;
         }
         new_map.make_actions(action);
         if (new_map.get_player_health() <= 0) {
             std::cout << "player died\n";
-            break;
+            return 0;
         }
     } while (true);
-
-    return 0;
 }
