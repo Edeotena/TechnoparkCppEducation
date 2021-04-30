@@ -2,23 +2,29 @@
 
 #include <string>
 
-#define ARMOR 1
-#define HELMET 2
-#define SHIELD 4
-#define PANTS 3
-#define TSHIRT 0
+enum ARMOR_NUMBER_ENUM {
+    TSHIRT = 0,
+    ARMOR = 1,
+    HELMET = 2,
+    PANTS = 3,
+    SHIELD = 4
+};
 
-#define ARMOR_WEIGHT 3
-#define HELMET_WEIGHT 2
-#define SHIELD_WEIGHT 7
-#define PANTS_WEIGHT 1
-#define TSHIRT_WEIGHT 1
+enum ARMOR_WEIGHT_ENUM {
+    ARMOR_WEIGHT = 3,
+    HELMET_WEIGHT = 2,
+    SHIELD_WEIGHT = 7,
+    PANTS_WEIGHT = 1,
+    TSHIRT_WEIGHT = 1
+};
 
-#define ARMOR_ARMOR 3
-#define HELMET_ARMOR 3
-#define SHIELD_ARMOR 5
-#define PANTS_ARMOR 1
-#define TSHIRT_ARMOR 1
+enum ARMOR_DEFENSE_ENUM {
+    ARMOR_ARMOR = 3,
+    HELMET_ARMOR = 3,
+    SHIELD_ARMOR = 5,
+    PANTS_ARMOR = 1,
+    TSHIRT_ARMOR = 1
+};
 
 namespace armor {
 class armor {
