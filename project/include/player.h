@@ -1,12 +1,14 @@
 #pragma once
 
+#define MAX_ARMOR_COUNT 5
+
 namespace player {
 class player {
  private:
-    int health = 100;
+    int health;
     int x = 0, y = 0;
     int armor_count = 0, weight = 0;
-    bool armor_equipment[5];
+    bool armor_equipment[MAX_ARMOR_COUNT];
 
  public:
     player();
@@ -16,6 +18,8 @@ class player {
     void move_x(const int x);
 
     void move_y(const int y);
+
+    void set_health(const int health);
 
     int get_x() const;
 
