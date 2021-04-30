@@ -5,6 +5,7 @@ namespace player {
         for (int i = 0; i < 5; ++i) {
             armor_equipment[i] = false;
         }
+        health = 100;
     }
 
     void player::move_x(const int x) {
@@ -13,6 +14,10 @@ namespace player {
 
     void player::move_y(const int y) {
         this->y += y;
+    }
+
+    void player::set_health(const int health) {
+        this->health = health;
     }
 
     int player::get_x() const {
