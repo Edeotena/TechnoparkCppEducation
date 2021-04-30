@@ -1,8 +1,8 @@
 #pragma once
 
+namespace player {
 #define MAX_ARMOR_COUNT 5
 
-namespace player {
 class player {
  private:
     int health;
