@@ -16,48 +16,48 @@ namespace armor {
     }
 
     int armor::transport() const {
-        if (armor_name == "armor") {
+        if (armor_name == ARMOR_NAME_ARRAY[ARMOR]) {
             return ARMOR;
         }
-        if (armor_name == "helmet") {
+        if (armor_name == ARMOR_NAME_ARRAY[HELMET]) {
             return HELMET;
         }
-        if (armor_name == "shield") {
+        if (armor_name == ARMOR_NAME_ARRAY[SHIELD]) {
             return SHIELD;
         }
-        if (armor_name == "pants") {
+        if (armor_name == ARMOR_NAME_ARRAY[PANTS]) {
             return PANTS;
         }
         return TSHIRT;
     }
 
     int armor::transport_weight() const {
-        if (armor_name == "armor") {
+        if (armor_name == ARMOR_NAME_ARRAY[ARMOR]) {
             return ARMOR_WEIGHT;
         }
-        if (armor_name == "helmet") {
+        if (armor_name == ARMOR_NAME_ARRAY[HELMET]) {
             return HELMET_WEIGHT;
         }
-        if (armor_name == "shield") {
+        if (armor_name == ARMOR_NAME_ARRAY[SHIELD]) {
             return SHIELD_WEIGHT;
         }
-        if (armor_name == "pants") {
+        if (armor_name == ARMOR_NAME_ARRAY[PANTS]) {
             return PANTS_WEIGHT;
         }
         return TSHIRT_WEIGHT;
     }
 
     int armor::transport_armor() const {
-        if (armor_name == "armor") {
+        if (armor_name == ARMOR_NAME_ARRAY[ARMOR]) {
             return ARMOR_ARMOR;
         }
-        if (armor_name == "helmet") {
+        if (armor_name == ARMOR_NAME_ARRAY[HELMET]) {
             return HELMET_ARMOR;
         }
-        if (armor_name == "shield") {
+        if (armor_name == ARMOR_NAME_ARRAY[SHIELD]) {
             return SHIELD_ARMOR;
         }
-        if (armor_name == "pants") {
+        if (armor_name == ARMOR_NAME_ARRAY[PANTS]) {
             return PANTS_ARMOR;
         }
         return TSHIRT_ARMOR;
