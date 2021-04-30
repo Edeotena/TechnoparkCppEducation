@@ -2,6 +2,9 @@
 
 #include <string>
 
+namespace armor {
+#define MAX_ARMOR_COUNT 5
+
 enum ARMOR_NUMBER_ENUM {
     TSHIRT = 0,
     ARMOR = 1,
@@ -26,11 +29,11 @@ enum ARMOR_DEFENSE_ENUM {
     TSHIRT_ARMOR = 1
 };
 
-namespace armor {
 class armor {
  private:
     int x, y;
     std::string armor_name;
+    std::string ARMOR_NAME_ARRAY[MAX_ARMOR_COUNT] = {"t-shirt", "armor", "helmet", "pants", "shield"};
  public:
     armor(std::string armor_name, int x, int y);
 
