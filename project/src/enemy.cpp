@@ -5,16 +5,16 @@ namespace enemy {
 
     enemy::enemy(const std::string& enemy_name, const int x, const int y) : x(x), y(y), enemy_name(enemy_name) {
         if (enemy_name == "wolf") {
-            health = 6;
-            damage = 11;
+            health = WOLF_HEALTH;
+            damage = WOLF_DAMAGE;
         }
         if (enemy_name == "dog") {
-            health = 3;
-            damage = 6;
+            health = DOG_HEALTH;
+            damage = DOG_DAMAGE;
         }
         if (enemy_name == "rat") {
-            health = 2;
-            damage = 4;
+            health = RAT_HEALTH;
+            damage = RAT_DAMAGE;
         }
     }
 
@@ -24,6 +24,14 @@ namespace enemy {
 
     int enemy::get_y() const {
         return y;
+    }
+
+    void enemy::set_damage(const int damage) {
+        this->damage = damage;
+    }
+
+    void enemy::set_health(const int health) {
+        this->health = health;
     }
 
     std::string enemy::get_name() const {
