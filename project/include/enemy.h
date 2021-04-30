@@ -2,6 +2,15 @@
 
 #include <string>
 
+namespace enemy {
+#define MAX_ENEMY_COUNT 3
+
+enum ENEMY_NUMBER_ENUM {
+    WOLF = 0,
+    DOG = 1,
+    RAT = 2
+};
+
 enum ENEMY_HEALTH_ENUM {
     RAT_HEALTH = 2,
     DOG_HEALTH = 3,
@@ -14,13 +23,13 @@ enum ENEMY_DAMAGE_ENUM {
     WOLF_DAMAGE = 11
 };
 
-namespace enemy {
 class enemy {
  private:
     int x, y;
     int health;
     int damage;
     std::string enemy_name;
+    std::string ENEMY_NAME_ARRAY[MAX_ENEMY_COUNT] = {"wolf", "dog", "rat"};
 
  public:
     enemy();
