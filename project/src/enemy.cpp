@@ -4,15 +4,15 @@ namespace enemy {
     enemy::enemy() : x(0), y(0), health(0), damage(0) {}
 
     enemy::enemy(const std::string& enemy_name, const int x, const int y) : x(x), y(y), enemy_name(enemy_name) {
-        if (enemy_name == "wolf") {
+        if (enemy_name == ENEMY_NAME_ARRAY[WOLF]) {
             health = WOLF_HEALTH;
             damage = WOLF_DAMAGE;
         }
-        if (enemy_name == "dog") {
+        if (enemy_name == ENEMY_NAME_ARRAY[DOG]) {
             health = DOG_HEALTH;
             damage = DOG_DAMAGE;
         }
-        if (enemy_name == "rat") {
+        if (enemy_name == ENEMY_NAME_ARRAY[RAT]) {
             health = RAT_HEALTH;
             damage = RAT_DAMAGE;
         }
