@@ -2,6 +2,18 @@
 
 #include <string>
 
+enum ENEMY_HEALTH_ENUM {
+    RAT_HEALTH = 2,
+    DOG_HEALTH = 3,
+    WOLF_HEALTH = 6
+};
+
+enum ENEMY_DAMAGE_ENUM {
+    RAT_DAMAGE = 4,
+    DOG_DAMAGE  = 6,
+    WOLF_DAMAGE = 11
+};
+
 namespace enemy {
 class enemy {
  private:
@@ -20,6 +32,10 @@ class enemy {
     int get_x() const;
 
     int get_y() const;
+
+    void set_damage(const int damage);
+
+    void set_health(const int health);
 
     std::string get_name() const;
 
