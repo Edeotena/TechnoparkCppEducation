@@ -1,259 +1,137 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdbool.h>
-
-int find_boundary(const char* string) {
-    if (strstr(string, " boundary=") || strstr(string, "\tboundary=") ||
-        strstr(string, ",boundary=") || strstr(string, ";boundary=") || strstr(string, " BOUNDARY=")) {
-        int k = 0;
-        while (true) {
-            if ((string[k] == 'y' || string[k + 1] == 'y' ||
-                string[k] == 'Y' || string[k + 1] == 'Y')  && string[k + 2] == '=') {
-                break;
-            }
-            ++k;
-        }
-        return k + 3;
-    }
-    return 0;
-}
+#include "utils.h"
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
-        return -1;
+        return (-1);
     }
-    bool multi_parts = false, to_found = false, from_found = false, date_found = false,
-        from_just_found = false, to_just_found = false, date_just_found = false;
-    char *path_to_file = argv[1];
-    size_t parts = 0;
 
-    char* string = (char*)(malloc(sizeof(char) * 2400000));
-    if (!string) {
-        free(string);
-        return -1;
-    }
-    char* string_to = (char*)(malloc(sizeof(char) * 2400000));
-    if (!string_to) {
-        free(string_to);
-        free(string);
-        return -1;
-    }
-    char* string_from = (char*)(malloc(sizeof(char) * 1024));
-    if (!string_from) {
-        free(string_from);
-        free(string_to);
-        free(string);
-        return -1;
-    }
-    char* string_date = (char*)(malloc(sizeof(char) * 1024));
-    if (!string_date) {
-        free(string_date);
-        free(string_from);
-        free(string_to);
-        free(string);
-        return -1;
-    }
-    char* string_boundary = (char*)(malloc(sizeof(char) * 1024));
-    if (!string_boundary) {
-        free(string_boundary);
-        free(string_date);
-        free(string_from);
-        free(string_to);
-        free(string);
-        return -1;
-    }
-    memset(string, '\0', 2400000);
-    memset(string_to, '\0', 2400000);
-    memset(string_from, '\0', 1024);
-    memset(string_date, '\0', 1024);
-    memset(string_boundary, '\0', 1024);
+    char *path_to_file = argv[1];
 
     FILE* file_to_pars = fopen(path_to_file, "r");
     if (!file_to_pars) {
-        free(string_boundary);
-        free(string_date);
-        free(string_from);
-        free(string_to);
-        free(string);
-        return -1;
+        return (-1);
     }
 
-    while (!feof(file_to_pars)) {
-        fgets(string, 2400000, file_to_pars);
-        bool already_found_smth = false;
+    key_words* mail = create_key_words();
+    if (mail == NULL) {
+    	fclose(file_to_pars);
+    	return (-1);
+    }
 
-        if (from_just_found) {
-            from_just_found = false;
-            size_t i = 0;
-            while (string[i] == ' ') {
-                ++i;
-            }
-            if (i) {
-                from_just_found = true;
-                size_t size_of_string = strlen(string_from);
-                size_t size = strlen(string) + 1;
-                for (size_t j = 0; j < size; ++j) {
-                    if (string[i - 1] == '\n' || string[i - 1] == '\r') {
-                        break;
-                    }
-                    string_from[size_of_string + j] = string[i - 1];
-                    i++;
-                }
-            }
+    size_t parts = 0;
+    bool is_multy = false;
+    bool from_just_found = false, to_just_found = false, date_just_found = false;
+
+    char* line = NULL;
+    size_t line_size = 0;
+
+    while (!feof(file_to_pars)) {	
+        getline(&line, &line_size, file_to_pars);
+        if (line[0] == '\r' || line[0] == '\n') {
+            break;
         }
 
         if (to_just_found) {
+            if (!expand_key_word(&mail->string_to, &line, file_to_pars)) {
+                free_key_words(mail);
+                free(line);
+                fclose(file_to_pars);
+                return (-1);
+            }
             to_just_found = false;
-            size_t i = 0;
-            while (string[i] == ' ') {
-                i++;
+        }
+
+        if (from_just_found) {
+            if (!expand_key_word(&mail->string_from, &line, file_to_pars)) {
+                free_key_words(mail);
+                free(line);
+                fclose(file_to_pars);
+                return (-1);
             }
-            if (i) {
-                to_just_found = true;
-                size_t size_of_string = strlen(string_to);
-                size_t size = strlen(string) + 1;
-                for (size_t j = 0; j < size; ++j) {
-                    if (string[i - 1] == '\n' || string[i - 1] == '\r') {
-                        break;
-                    }
-                    string_to[size_of_string + j] = string[i - 1];
-                    i++;
-                }
-            }
+            from_just_found = false;
         }
 
         if (date_just_found) {
+            if (!expand_key_word(&mail->string_date, &line, file_to_pars)) {
+                free_key_words(mail);
+                free(line);
+                fclose(file_to_pars);
+                return (-1);
+            }
             date_just_found = false;
-            size_t i = 0;
-            while (string[i] == ' ') {
-                i++;
-            }
-            if (i) {
-                date_just_found = true;
-                size_t size_of_string = strlen(string_date);
-                size_t size = strlen(string) + 1;
-                for (size_t j = 0; j < size; ++j) {
-                    if (string[i - 1] == '\n' || string[i - 1] == '\r') {
-                        break;
-                    }
-                    string_date[size_of_string + j] = string[i - 1];
-                    i++;
-                }
-            }
         }
 
-        if (string[0] == 'T' && string[1] == 'o' && string[2] == ':' && !to_found) {
-            size_t space_count = 0;
-            while (string[3 + space_count] == ' ') {
-                ++space_count;
+        int new_key_word;
+
+        new_key_word = find_key_word(&mail->string_to, &line ,"To:");
+        if (new_key_word) {
+            if (new_key_word == -1) {
+                free_key_words(mail);
+                free(line);
+                fclose(file_to_pars);
+                return (-1);
             }
-            size_t size = strlen(string) - 4 - space_count;
-            for (size_t i = 0; i < size; i++) {
-                if (string[i + 3 + space_count] == '\r') {
-                    break;
-                }
-                string_to[i] = string[i + 3 + space_count];
-            }
-            already_found_smth = true;
-            to_found = true;
             to_just_found = true;
         }
 
-        if (string[0] == 'F' && string[1] == 'r' && string[2] == 'o' &&
-            string[3] == 'm' && string[4] == ':' && !from_found && !already_found_smth) {
-            size_t space_count = 0;
-            while (string[5 + space_count] == ' ') {
-                ++space_count;
+        new_key_word = find_key_word(&mail->string_from, &line ,"From:");
+        if (new_key_word) {
+            if (new_key_word == -1) {
+                free_key_words(mail);
+                free(line);
+                fclose(file_to_pars);
+                return (-1);
             }
-            size_t size = strlen(string) - 6 - space_count;
-            for (size_t i = 0; i < size; i++) {
-                if (string[i + 5 + space_count] == '\r') {
-                    break;
-                }
-                string_from[i] = string[i + 5 + space_count];
-            }
-            already_found_smth = true;
-            from_found = true;
             from_just_found = true;
         }
 
-        if (string[0] == 'D' && string[1] == 'a' && string[2] == 't' &&
-            string[3] == 'e' && string[4] == ':'  && !date_found && !already_found_smth) {
-            size_t space_count = 0;
-            while (string[5 + space_count] == ' ') {
-                ++space_count;
+        new_key_word = find_key_word(&mail->string_date, &line ,"Date:");
+        if (new_key_word) {
+            if (new_key_word == -1) {
+                free_key_words(mail);
+                free(line);
+                fclose(file_to_pars);
+                return (-1);
             }
-            size_t size = strlen(string) - 6 - space_count;
-            for (size_t i = 0; i < size; i++) {
-                if (string[i + 5 + space_count] == '\r') {
-                    break;
-                }
-                string_date[i] = string[i + 5 + space_count];
-            }
-            already_found_smth = true;
-            date_found = true;
             date_just_found = true;
-        }
+        } 
 
-        if (!already_found_smth && !multi_parts) {
-            if (find_boundary(string)) {
-                size_t j = 0;
-                size_t qoutes_count = 0;
-                size_t i = find_boundary(string);
-                size_t size = strlen(string);
-                for (; i < size; ++i) {
-                    if (string[i] == '"') {
-                        i++;
-                        qoutes_count++;
-                    }
-                    if (string[i] == '/' && string[i + 1] == '"') {
-                        i += 2;
-                        qoutes_count++;
-                    }
-                    if (string[i] == ' ') {
-                        i++;
-                    }
-                    if (qoutes_count == 2) {
-                        while (string[i] != '\r' && string[i]!= '\n') {
-                            i++;
-                        }
-                    }
-                    string_boundary[j] = string[i];
-                    j++;
+        if (!is_multy) {
+            new_key_word = find_boundary(&mail->string_boundary, &line);
+            if (new_key_word) {
+                if (new_key_word == -1) {
+                    free_key_words(mail);
+                    free(line);
+                    fclose(file_to_pars);
+                    return (-1);
                 }
-                multi_parts = true;
+                is_multy = true;
             }
         }
 
-        if (strlen(string) <= 2) {
-            break;
-        }
     }
 
-    if (multi_parts) {
+    if (is_multy) {
         while (!feof(file_to_pars)) {
-            fgets(string, 1024, file_to_pars);
-            if (strstr(string, string_boundary)) {
+            getline(&line, &line_size, file_to_pars);
+            if (line[0] == '-' && line[1] == '-' && is_equal(delete_endline(line + 2), mail->string_boundary)) {
                 ++parts;
             }
         }
     } else {
         while (!feof(file_to_pars)) {
-            fgets(string, 1024, file_to_pars);
-            if (strlen(string) > 2) {
+            getline(&line, &line_size, file_to_pars);
+            if (line[0] != '\r' && line[0] != '\n') {
                 parts = 1;
                 break;
             }
         }
     }
-    fclose(file_to_pars);
+    
+    printf("%s|%s|%s|%zu", mail->string_from, mail->string_to, mail->string_date, parts);
 
-    printf("%s|%s|%s|%zu", string_from, string_to, string_date, parts);
-    free(string_boundary);
-    free(string);
-    free(string_to);
-    free(string_date);
-    free(string_from);
+    fclose(file_to_pars);
+    free_key_words(mail);
+    free(line); 
     return 0;
 }
