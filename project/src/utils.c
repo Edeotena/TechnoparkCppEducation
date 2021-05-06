@@ -1,32 +1,5 @@
 #include "utils.h"
 
-bool is_letter(char symbol) {
-    if ((symbol >= 'A' && symbol <= 'Z') || (symbol >= 'a' && symbol <= 'z')) {
-        return true;
-    }
-
-    return false;
-}
-
-bool is_equal(char* first, char* second) {
-    if (first == NULL || second == NULL) {
-        return false;
-    }
-
-    size_t first_size = strlen(first);
-    size_t second_size = strlen(second);
-
-    if (first_size != second_size) {
-        return false;
-    }
-
-       if(!strcmp(first,second)) {
-        return true;
-    }
-
-    return false;
-}
-
 void free_key_words(key_words* words_to_free) {
     if (words_to_free != NULL) {
         if (words_to_free->string_to != NULL) {
@@ -57,7 +30,7 @@ key_words* create_key_words() {
     result->string_boundary = (char*)calloc(1, sizeof(char));
 
     if (result->string_to == NULL || result->string_from == NULL ||
-    result->string_date == NULL || result->string_boundary == NULL) {
+        result->string_date == NULL || result->string_boundary == NULL) {
         free_key_words(result);
         return NULL;
     }
@@ -96,51 +69,54 @@ char* delete_endline(char* line) {
     return result_line;
 }
 
-char* info_to_add(char* info, char* additional_info) {
+char* info_to_add(char* main_info, char* additional_info) {
     if (additional_info[0] != ' ') {
         return additional_info;
     }
 
-    size_t space_count = 0;
-    while(additional_info[space_count] == ' ') {
-        ++space_count;
+    int size = 0;
+    if (additional_info[1] == ' ') {
+        size = 1;
     }
-    --space_count;
 
-    size_t info_size = strlen(info);
-    size_t additional_info_size = strlen(additional_info);
+    size_t main_len = strlen(main_info);
+    size_t additional_len = strlen(additional_info);
 
-    char* info_for_result = delete_endline(additional_info);    
-    if (info_for_result == NULL) {
+    char* new_additional_info = delete_endline(additional_info);
+    if (new_additional_info == NULL) {
         return NULL;
     }
 
-    char* result_info = (char*)calloc((info_size + additional_info_size + 1), sizeof(char));
-    if (result_info == NULL) {
-        free(info_for_result);
+    size_t endline_count = 1;
+    if (additional_info[additional_len - 1] == '\n' || additional_info[additional_len - 1] == '\r') {
+        endline_count = 1;
+    }
+
+    char* result = (char*)calloc((main_len + additional_len - endline_count + 1), sizeof(char));
+    if (result == NULL) {
         return NULL;
     }
 
-    memcpy(result_info, info, info_size);
-    memcpy(result_info + info_size, info_for_result + space_count, additional_info_size - space_count + 1);
+    memcpy(result, main_info, main_len);
+    memcpy(result + main_len, new_additional_info + size, additional_len - endline_count);
 
     free(additional_info);
-    free(info_for_result);
-    info = result_info;
-
-    return result_info;
+    free(new_additional_info);
+    main_info = result;
+    return main_info;
 }
+
 
 bool expand_key_word(char** key_word, char** line, FILE* file_to_parse) {
     size_t line_size = 0;
     while (true) {
         char* expanded_key_word = info_to_add(*key_word, *line);
 
-        if(expanded_key_word == NULL) {
+        if (expanded_key_word == NULL) {
             return false;
         }
 
-        if(expanded_key_word == *line) {
+        if (expanded_key_word == *line) {
             break;
         }
 
@@ -166,13 +142,12 @@ int find_key_word(char** key_word, char** line, char* required_key_word) {
     }
 
     size_t symbols_to_skip = strlen(required_key_word);
-    while((*line + symbols_to_skip)[0] == ' ') {
+    while ((*line + symbols_to_skip)[0] == ' ') {
         ++symbols_to_skip;
     }
 
-    free(*key_word);	
-    *key_word = *line + symbols_to_skip;
-    *key_word = delete_endline(*key_word);
+    free(*key_word);
+    *key_word = delete_endline(*line + symbols_to_skip);
     if (*key_word == NULL) {
         return (-1);
     }
@@ -180,7 +155,7 @@ int find_key_word(char** key_word, char** line, char* required_key_word) {
     return 1;
 }
 
-char* lower_string(char* string_to_make_lower) {    
+char* lower_string(char* string_to_make_lower) {
     size_t string_size = strlen(string_to_make_lower);
     char* result = (char*)calloc(string_size + 1, sizeof(char));
 
@@ -196,7 +171,6 @@ char* lower_string(char* string_to_make_lower) {
 }
 
 int find_boundary(char** key_boundary, char** line) {
-
     char* test_boundary = lower_string(*line);
     if (test_boundary == NULL) {
         return (-1);
@@ -210,7 +184,7 @@ int find_boundary(char** key_boundary, char** line) {
     size_t boundary_place = strlen(*line) - strlen(strstr(test_boundary, "boundary"));
     free(test_boundary);
 
-    if (is_letter((*line)[boundary_place - 1])) {
+    if (isalpha((*line)[boundary_place - 1])) {
         return 0;
     }
 
@@ -219,20 +193,22 @@ int find_boundary(char** key_boundary, char** line) {
         boundary_start++;
     }
 
-    if((*line + boundary_start)[0] == '"') {
+    if ((*line + boundary_start)[0] == '"') {
         ++boundary_start;
     }
 
     size_t boundary_end = boundary_start;
 
     for (;; ++boundary_end) {
-        if ((*line + boundary_end)[0] == '"' || (*line + boundary_end)[0]  == ';' || (*line + boundary_end)[0] == '\r' || (*line + boundary_end)[0]  == '\n' || (*line + boundary_end)[0]  == ' ') {
+        if ((*line + boundary_end)[0] == '"' || (*line + boundary_end)[0]  == ';' ||
+           (*line + boundary_end)[0] == '\r' || (*line + boundary_end)[0]  == '\n' ||
+           (*line + boundary_end)[0]  == ' ') {
             --boundary_end;
             break;
         }
     }
 
-    char* ready_bountary = (char*)calloc(boundary_end,sizeof(char));
+    char* ready_bountary = (char*)calloc(boundary_end, sizeof(char));
     if (ready_bountary == NULL) {
         return (-1);
     }

@@ -1,3 +1,6 @@
+#ifndef PROJECT_INCLUDE_UTILS_H_
+#define PROJECT_INCLUDE_UTILS_H_
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -10,10 +13,6 @@ typedef struct {
     char* string_date;
     char* string_boundary;
 } key_words;
-
-bool is_letter(char symbol);
-
-bool is_equal(char* first, char* second);
 
 void free_key_words(key_words* words_to_free);
 
@@ -30,3 +29,5 @@ int find_key_word(char** key_word, char** line, char* required_key_word);
 char* lower_string(char* string_to_make_lower);
 
 int find_boundary(char** key_boundary, char** line);
+
+#endif  // PROJECT_INCLUDE_UTILS_H_
