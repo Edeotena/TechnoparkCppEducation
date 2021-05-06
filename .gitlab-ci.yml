@@ -9,6 +9,11 @@ stages:
   - test_bin
   - test_mem
 
+before_script:
+  - apt-get update --yes
+  - apt-get install --yes cmake
+  - apt-get install --yes python2.7
+
 test_style:
   stage: test_style
   script:
