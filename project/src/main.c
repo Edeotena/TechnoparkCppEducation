@@ -2,20 +2,20 @@
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
-        return (-1);
+        return BAD_INPUT_ERROR;
     }
 
     char *path_to_file = argv[1];
 
     FILE* file_to_pars = fopen(path_to_file, "r");
     if (!file_to_pars) {
-        return (-1);
+        return FILE_OPENING_ERROR;
     }
 
     key_words* mail = create_key_words();
     if (mail == NULL) {
         fclose(file_to_pars);
-        return (-1);
+        return ALLOC_ERROR;
     }
 
     size_t parts = 0;
@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
                 free_key_words(mail);
                 free(line);
                 fclose(file_to_pars);
-                return (-1);
+                return ALLOC_ERROR;
             }
             to_just_found = false;
         }
@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
                 free_key_words(mail);
                 free(line);
                 fclose(file_to_pars);
-                return (-1);
+                return ALLOC_ERROR;
             }
             from_just_found = false;
         }
@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
                 free_key_words(mail);
                 free(line);
                 fclose(file_to_pars);
-                return (-1);
+                return ALLOC_ERROR;
             }
             date_just_found = false;
         }
@@ -65,33 +65,33 @@ int main(int argc, char* argv[]) {
 
         new_key_word = find_key_word(&mail->string_to, &line , "To:");
         if (new_key_word) {
-            if (new_key_word == -1) {
+            if (new_key_word == ALLOC_ERROR) {
                 free_key_words(mail);
                 free(line);
                 fclose(file_to_pars);
-                return (-1);
+                return ALLOC_ERROR;
             }
             to_just_found = true;
         }
 
         new_key_word = find_key_word(&mail->string_from, &line , "From:");
         if (new_key_word) {
-            if (new_key_word == -1) {
+            if (new_key_word == ALLOC_ERROR) {
                 free_key_words(mail);
                 free(line);
                 fclose(file_to_pars);
-                return (-1);
+                return ALLOC_ERROR;
             }
             from_just_found = true;
         }
 
         new_key_word = find_key_word(&mail->string_date, &line , "Date:");
         if (new_key_word) {
-            if (new_key_word == -1) {
+            if (new_key_word == ALLOC_ERROR) {
                 free_key_words(mail);
                 free(line);
                 fclose(file_to_pars);
-                return (-1);
+                return ALLOC_ERROR;
             }
             date_just_found = true;
         }
@@ -99,11 +99,11 @@ int main(int argc, char* argv[]) {
         if (!is_multy) {
             new_key_word = find_boundary(&mail->string_boundary, &line);
             if (new_key_word) {
-                if (new_key_word == -1) {
+                if (new_key_word == ALLOC_ERROR) {
                     free_key_words(mail);
                     free(line);
                     fclose(file_to_pars);
-                    return (-1);
+                    return ALLOC_ERROR;
                 }
                 is_multy = true;
             }

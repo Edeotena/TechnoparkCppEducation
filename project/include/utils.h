@@ -7,6 +7,10 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+#define ALLOC_ERROR (-1)
+#define FILE_OPENING_ERROR (-2)
+#define BAD_INPUT_ERROR (-3)
+
 typedef struct {
     char* string_to;
     char* string_from;

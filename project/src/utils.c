@@ -149,7 +149,7 @@ int find_key_word(char** key_word, char** line, char* required_key_word) {
     free(*key_word);
     *key_word = delete_endline(*line + symbols_to_skip);
     if (*key_word == NULL) {
-        return (-1);
+        return ALLOC_ERROR;
     }
 
     return 1;
@@ -173,7 +173,7 @@ char* lower_string(char* string_to_make_lower) {
 int find_boundary(char** key_boundary, char** line) {
     char* test_boundary = lower_string(*line);
     if (test_boundary == NULL) {
-        return (-1);
+        return ALLOC_ERROR;
     }
 
     if (strstr(test_boundary, "boundary") == NULL) {
@@ -210,7 +210,7 @@ int find_boundary(char** key_boundary, char** line) {
 
     char* ready_bountary = (char*)calloc(boundary_end, sizeof(char));
     if (ready_bountary == NULL) {
-        return (-1);
+        return ALLOC_ERROR;
     }
 
     strncpy(ready_bountary, *line + boundary_start, boundary_end - boundary_start + 1);
