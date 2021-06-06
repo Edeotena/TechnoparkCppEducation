@@ -1,65 +1,84 @@
-#include "blackRecord.h"
-#include "transactionWrite.h"
-#include "masterWrite.h"
+#include "prototype_storage.h"
+#include "file_methods_check.h"
 
 int main(void) {
-    int choice = 0;
-    FILE *ptr, *ptr_2 , *blackrecord;
-    Data client_data = {0}, transfer = {0};
+    if (file_methods_check("file.dat")) {
+        int choice = 0;
+        FILE *file_clients, *file_transactions , *file_ready_clients;
+        data client_data = {0}, transfer_to_client = {0};
 
-    printf("%s\n%s\n%s\n%s\n\n",
-        "please enter action",
-        "1 enter data client:",
-        "2 enter data transaction:",
-        "3 update base");
+        printf("%s\n%s\n%s\n%s\n\n",
+               "please enter action",
+               "1 enter data client:",
+               "2 enter data transaction:",
+               "3 update base");
 
-    while (scanf("%d", &choice) != -1) {
-        switch (choice) {
-        case 1:
-            ptr = fopen("record.dat", "r+");
-            if (ptr == NULL) {
-                puts("Not acess");
-            } else {
-                masterWrite(ptr, client_data);
-                fclose(ptr);
-            }
-        break;
+        while (scanf("%d", &choice) != -1) {
+            switch (choice) {
+            case ENTER_DATA_CLIENT:
+                file_clients = fopen("record.dat", "r+");
+                if (file_clients == NULL) {
+                    puts("Not access");
+                    break;
+                }
 
-        case 2:
-            ptr = fopen(filename, "r+");
-            if (ptr == NULL) {
-                puts("Not acess");
-            } else {
-                transactionWrite(ptr, transfer);
-                fclose(ptr);
-            }
+                master_write(file_clients, client_data);
+                fclose(file_clients);
             break;
 
-        case 3:
-            ptr = fopen("record.dat", "r");
-            ptr_2 = fopen(filename, "r");
-            blackrecord = fopen("blackrecord.dat", "w");
-            if (ptr == NULL || ptr_2 == NULL) {
-                puts("exit");
-            } else {
-                blackRecord(ptr, ptr_2, blackrecord, client_data, transfer);
-                fclose(ptr);
-                fclose(ptr_2);
-                fclose(blackrecord);
-            }
-            break;
+            case ENTER_DATA_TRANSACTION:
+                file_clients = fopen(FILENAME, "r+");
+                if (file_clients == NULL) {
+                    puts("Not access");
+                    break;
+                }
 
-        default:
-            puts("error");
-            break;
+                transaction_write(file_clients, transfer_to_client);
+                fclose(file_clients);
+                break;
+
+            case UPDATE_BASE:
+                file_clients = fopen("record.dat", "r");
+                if (file_clients == NULL) {
+                    puts("Not access");
+                    break;
+                }
+
+                file_transactions = fopen(FILENAME, "r");
+                if (file_transactions == NULL) {
+                    puts("Not access");
+                    fclose(file_clients);
+                    break;
+                }
+
+                file_ready_clients = fopen("blackrecord.dat", "w");
+                if (file_ready_clients == NULL) {
+                    puts("Not access");
+                    fclose(file_clients);
+                    fclose(file_transactions);
+                    break;
+                }
+
+                black_record(file_clients, file_transactions,
+                file_ready_clients, client_data, transfer_to_client);
+                fclose(file_clients);
+                fclose(file_transactions);
+                fclose(file_ready_clients);
+                break;
+
+            default:
+                puts("error");
+                break;
+            }
+
+        printf("%s\n%s\n%s\n%s\n\n",
+               "please enter action",
+               "1 enter data client:",
+               "2 enter data transaction:",
+               "3 update base");
         }
-
-    printf("%s\n%s\n%s\n%s\n\n",
-        "please enter action",
-        "1 enter data client:",
-        "2 enter data transaction:",
-        "3 update base");
+    } else {
+        printf("work with file trouble");
     }
-
     return 0;
 }
